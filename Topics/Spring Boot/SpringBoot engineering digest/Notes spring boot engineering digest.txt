@@ -1,0 +1,703 @@
+
+// open this file on notepad++ , use black theme and select JS as language for better view
+
+ *** boot boot spring boot ***
+ 
+ 
+ * standalone hai kisi ki jaroorat nahi hai bc , sidhe banao utha k deploy kar do no external configuartion needed
+ * purane zamane me hum java configuartion karke ke Application context banate the 
+ 
+   // MVC ki baat hori hai
+   
+@Configuration // ye laga k spring ko bata rahe hai bhaiya ye bean creation ka source ha IOC use kar lega fir ise
+public class HelloWorldConfig {
+   @Bean 
+   public HelloWorld helloWorld(){
+      return new HelloWorld();
+   }
+}
+
+
+// ye iski xml configuartion
+
+<beans>
+   <bean id = "helloWorld" class = "com.tutorialspoint.HelloWorld" />
+</beans>
+
+// iske baaad ye
+
+public static void main(String[] args) {
+   
+   ApplicationContext ctx = new AnnotationConfigApplicationContext(HelloWorldConfig.class);
+   
+   // ye bc ApplicationContext kya karta hai? bean banata hai =
+   
+   HelloWorld helloWorld = ctx.getBean(HelloWorld.class);
+   helloWorld.setMessage("Hello World!");
+   helloWorld.getMessage();
+}
+
+// xml based config k lye wheebox wala project hai
+
+// ye java base hai
+
+@Configuration // ioc ko bata dia ki ye bean banane ka source hai
+@ComponentScan({ "com.geeksforgeeks.web" })
+
+public class MVCconfig
+extends WebMvcConfigurerAdapter {
+}
+
+
+//************ maven ******************
+
+* maven build ka matlab application ko jar ya war me convert karna
+* agar mere project me mvnw and mvnw.cmd files hai sath me .mvn directory bhi hai to iska matlab mera project maven wrapper use kar raha hai, na ki system me install maven
+* mvn package jar ya war k liye , mvn clean karta hai target folder delete
+
+************************ @SpringBootApplication *******************************
+
+* IOC(Inversion of control): IOC jo hai wo ek principle hai, purane zamane me agar hume dusri class ki properties access karni hoti thi to hum banate the object uus class 
+   ka lekin hum to modern ho gaye ab hum to use 
+  karenge IOC wo provide karega hume runtime pe object isse hume loose coupling ki prapti hogi.
+* IOC container: spring app k start hote he sare objects or bean rakh leta hai spring container par bc hum to application context use kar rahte the na bean bana k spring 
+  contaner ko dene k liye 
+  haan to application context ek tareeka way hai IOC achieve karne ka.
+
+* IoC Container is a general term for dependency management in Spring.
+* ApplicationContext is a specific implementation of the IoC container that extends BeanFactory and provides extra features.
+* In most applications, ApplicationContext is preferred over BeanFactory.
+
+* par rakhaega kaise uske liye package scan karna using @ComponentScan and class ko bean banane k lye use mark kar do using @Component
+  annotation karti kya hai information provide karti hai metadata compiler ko ya framework ko
+
+@SpringBootApplication contains: 
+
+@Configuartion --- use to declare a class as configuartion class where we can make bean
+
+@Configuration  // Marks this class as a configuration class
+public class AppConfig {
+
+    @Bean  // Defines a Spring bean
+    public MyService myService() {
+        return new MyService();
+    }
+}
+
+
+@EnableAutoConfiguartion --- auto configuartion kar dega according to dependency presnt on classpath
+@ComponentScan  --- scan karo base package ko
+
+//************* Making Rest API *************
+
+* Controller k andar k method public hone chahye taki spirng or external request use access kar paye
+* JPA : Set of rules hote hai jisse hum oject relation mapping achieve kar sakte hai 
+* Persistant Provider/ ORM Tools: Spring Data JPA and Hibernate, Persistant means for long term
+* JPA is only for relational databases like mysql, sql
+* use spring data mongo db
+
+//************ lombork ************** 
+
+* it reduces the boilerplate code like getter , setter and contructor 
+* it make setter getters by itself during compilation but hides it , u can't see
+
+//*********** optional ********
+* box ki tarah hota hai , usme object ho bhi sakta hai nahi bhi , null pointer exception ko handle karne k liye hota 
+
+//********* jankari ************
+
+For small projects, a simple @Service class without an interface is fine.
+For large projects, using a Service Interface provides scalability, maintainability, and flexibility.
+For testability and mocking, an interface makes it easier to inject different implementations.
+
+//*********** @Transactional ***********
+
+Ensures data consistency by rolling back failed operations.
+✅ Reduces boilerplate code (no need to manually begin/commit transactions).
+✅ Supports isolation levels and propagation strategies.
+✅ Prevents partial updates in case of failures.
+
+When a method is marked with @Transactional, Spring creates a proxy that:
+Starts a transaction before method execution.
+Executes the method.
+Commits the transaction if successful, or rolls it back on failure.
+
+Avoid applying it to private methods (Spring proxies don’t intercept private methods).
+
+* microservice me kya hota hai sabka apna db hai bc waha purane zamane ka ACID transactions kaam nahi karega to hum kya kar sakte hai, 
+ 1) Local Transactions – Using @Transactional (for a single microservice).
+ 
+ suppose order service hai and payment service hai , abb order and payment dono save tabhi honge jab sab theek hoga , but make sure kese karnege ki payment ho gaya
+ ab pahle save order karnege use @transactional lagaynege usi method se payment api call karaynge agar wo paymnet successful return karti hai (means payment db me save)
+ otherwise runtime exception thorw kara denge and transaction rollback bc.
+ 
+ @Transactional
+    public Order placeOrder(String productName, Double amount) {
+        // Step 1: Create and Save Order (Status = "PENDING")
+        Order order = new Order(productName, amount, "PENDING");
+        orderRepository.save(order);
+
+        // Step 2: Call Payment Microservice (Simulated)
+        String paymentUrl = "http://PAYMENT-SERVICE/payments/process?orderId=" + order.getId() + "&amount=" + amount;
+        String response = restTemplate.getForObject(paymentUrl, String.class);
+
+        // Step 3: Update Order Status Based on Payment Response
+        if ("PAYMENT_SUCCESS".equals(response)) {
+            order.setStatus("SUCCESS");
+        } else {
+            throw new RuntimeException("Payment failed, rolling back order...");
+        }
+
+        return orderRepository.save(order);
+    }
+ 
+ 
+ 2) Distributed Transactions – Using SAGA Pattern or Two-Phase Commit (2PC) (for multiple microservices).
+
+Conclusion
+✅ @Transactional works for local transactions (single microservice).
+✅ In microservices, failures in one service must be handled manually (rollback doesn’t happen automatically).
+✅ For distributed transactions, use SAGA Pattern or Event-Driven Messaging (Kafka, RabbitMQ).
+
+
+* SAGA Pattern Implementation in a Spring Boot Microservices Architecture
+The SAGA pattern is a widely used solution for handling distributed transactions in microservices. Since @Transactional does not work across multiple microservices,
+the SAGA pattern ensures data consistency by breaking a transaction into multiple steps, with each step being a local transaction in a different microservic
+
+Example: 
+Order Service     → Publishes "ORDER_CREATED" → Kafka Topic
+Payment Service   → Listens to "ORDER_CREATED" → Processes Payment
+                  → Publishes "PAYMENT_SUCCESS" or "PAYMENT_FAILED"
+Order Service     → Listens to "PAYMENT_SUCCESS" or "PAYMENT_FAILED" → Updates Order Status
+
+in the example above, the Order is always saved in the database, regardless of whether the payment succeeds or fails. However, the order status is updated based on the 
+payment result.
+
+Transaction Flow Explanation
+Step 1: Order Created (PENDING)
+
+When a user places an order (POST /orders/create), the order is immediately saved in the database with status "PENDING".
+The event "ORDER_CREATED:<orderId>:<amount>" is published to Kafka.
+Step 2: Payment Service Processes the Order
+
+Payment Service listens for "ORDER_CREATED" events.
+It decides whether the payment should succeed or fail based on the amount.
+It then publishes a new event "PAYMENT_SUCCESS:<orderId>" or "PAYMENT_FAILED:<orderId>" to Kafka.
+Step 3: Order Status Updated
+
+Order Service listens for payment events and updates the order status in the database:
+If payment succeeds → Status updates to "SUCCESS".
+If payment fails → Status updates to "FAILED".
+
+Final Thoughts
+✅ Current behavior: The order is always saved, but its status is updated to "FAILED" on payment failure.
+✅ To rollback (delete order on failure): Modify updateOrderStatus() to remove the order if payment fails.
+✅ SAGA ensures eventual consistency → We update the system in steps instead of rolling back all changes at once. or we can also create an event to delete the entry
+
+Implementing the SAGA Pattern in Synchronous Communication in Spring Boot
+In a synchronous SAGA pattern, services communicate directly via REST APIs instead of using an event-driven approach like Kafka. 
+The Order Service directly calls the Payment Service and waits for a response.
+
+
+//********************* spring security *****************
+
+do tareeke hai microservices me security lagane k 
+
+1) centerlize security laga do API gateway me : 
+
+Architecture Overview
+
+* API Gateway (Spring Cloud Gateway + Spring Security)
+
+ Handles user authentication.
+ Issues JWT tokens.
+ Validates JWT tokens before forwarding requests.
+
+* Microservices (Spring Boot)
+
+Do not authenticate users.
+Only verify JWT tokens.
+Handle business logic.
+
+* Authentication Provider (Keycloak, OAuth2, or Custom Auth Server)
+
+ Issues JWT tokens.
+ 
+ 
+ ///////////////////////////////////// bc cors policy //////////////////////// 
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())  // Disable CSRF (for API requests)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // Enable CORS
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/public/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
+    }
+
+    // ✅ Define CORS configuration
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://example.com")); // Frontend URLs
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true); // Allow cookies/authentication
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}
+
+// only for specific controller
+
+@CrossOrigin(origins = "http://localhost:3000")  // ✅ Allow requests from frontend
+@RestController
+@RequestMapping("/api")
+public class UserController {
+	
+}
+
+// global cors k liye ek filter bana de jese wheebox me banaya tha
+ 
+************************************************************************
+
+Here’s a Spring Boot-based Custom Auth Server along with API Gateway and Microservices using Spring Security 6 and JWT. This setup will:
+
+Authenticate users in the Auth Server (auth-service).
+Generate JWT Tokens on successful login.
+Secure API Gateway (api-gateway) to verify JWT tokens before forwarding requests.
+Secure Microservices (user-service, order-service) to trust only valid JWT tokens.
+
+
+2) dusra har ke service token generate karegi and validate karegi (not recommenades) coz request ko serive pe user authenticate karna padega , increase latency and overhead
+
+
+//******************** classpath *********************************
+
+classpath kya hota hai, classpath ek list hai, jar and directories ki jo ki jvm use karti hai isme and config files bhi , xml format me hoti hai ye
+
+// ********************** application.properties *******************
+
+1) application.properties
+2) application.yml
+3) can also give configuration using maven using commands in terminal
+
+//*************** testing *****************
+
+public class UserServiceDemoTest {
+
+	@Autowired
+	UserServiceDemo userServiceDemo; 
+	
+	@Test
+	public void testAddition() {
+	
+		//assertEquals(4, 3+1);
+		assertNotNull(userServiceDemo.getUserAll()); // will get null pointer exception coz userserive will not autowired 
+		// haaan to bc context load nai hoga na isliye use @SpringBootTest on test class 
+	}
+	
+	// see JournalApp project for better understanding
+
+
+// ************** Mockito **********************
+
+* Junit me hum kya kar rahe the test kar rahe the sahab user service ya reposositry se jo DB se data fetch karke late hai , lekin agar hamari bohot badi application hai to sare 
+ components load hone me and connection banne me time lagta hai so hume kya karna padega reposositry and service ko mock karna padega na
+* agar hum play kar rahe hai spring context k sath to sare components load honge , agar hum use kare hai @SpringBootTest matlab spirng context load hoga hume autowired and 
+  @Mockbean use karna padega
+  lekain hum chahte hai sare components load na ho to use 
+  
+  
+// ************* profile **********************
+
+1) make two seperate file of application.properties , application-dev.properties, application-prod.properties and do spring.profile.active = dev in application.properties
+   but the issue is r we going to change entry every time .
+2) or we can use cmd like mvn clean package -D spring.profile.active = dev 
+3) in eclipse Using Environment Variables
+ In Eclipse, go to Run Configurations.
+ Select your application.
+ Navigate to the Environment tab.
+ Click New, then:
+ Name: SPRING_PROFILES_ACTIVE
+ Value: dev
+ Click Apply and Run  
+
+* jenkins bhi internally yahi sab bc karta hai 
+* kaun sa bean load karwana hai ya nahi wo bhi decide kar sakte hai profile se example apna security chain filter bana lo 2 class one dev and prod , dev wale pe laga do 
+  @Profile("dev") and @Profile("prod") 
+* @ActiveProfile("dev") ka use kar sakte hai hum Test cases class me 
+* but not a good solution kyuki prod file likhna padd raha hai it will be visible on git, haan to externalise kar sakte haina application.properties file ko 
+* we also active multiple profile
+* we can also use Environment bean to get environement
+
+
+
+// **************** logiing ******************
+
+* Logback : default framework hai logging k liye spring ka
+* Jul: default hai jdk ka
+* LogJ42 is use mostly have advance features
+* hum use karenege slf4j and private static final Logger logger = LoggerFactory.getLogger(UserDetailServiceImpl.class); , logger.info("") ase kar sakte hai but just use @slf4j no 
+  need for declaration
+* in springboot we can also set logiing using application.properties or yaml ex -- logging.level.com.engineeringdigest.journalApp=DEBUG or ERROR or WARN OR TRACE isse hoga kya 
+   iis package k sare logs ya to debug wala ya error wale(jo likha hoga) dekhnge, ab puri application k karne hai to 
+* same can be achieved by xml --- logback.xml   (do chat gpt)
+
+
+// *********** calling external API *************
+
+
+Serialization: conversion of java object into JSON when sending over the internet and the opposite is deserilization
+Use restTemplate , make a bean of it and use restTemplate.exchange() function
+
+
+// ************ @Value("${api.url}") 
+
+* use to inject properties from application.properties to class in a variable
+
+
+// ********* @PostConstruct ***********
+
+* whenever a bean is made or load call a function using @PostConstruct
+
+
+// **************** Redis *******************
+
+// ************** Kafka *********************
+
+* Apache Kafka is a distributed event streaming platform used for building real-time data pipelines and streaming applications. 
+  It is highly scalable, fault-tolerant, and designed to handle large volumes of data efficiently. // chat gpt response
+
+* pahle to jitne bhi events ho rahe hai ex like,comments ,order and notifications kafka unhe collect karega and store karega temperoray than distribute karega among the services 
+  to kafka ensure karega jo data travel ho wo smooth ho agar yahi cheej hum rest serivce se kare to direct communication hoga and turant hoga synchronous hoga to jab load badega
+  to laure lag jaynege, suppose mai kar 1 sec me 1 mil likes kar raha hu to kafka kya karega in request ko distribute kar dega , sacalbality and loose coupling achieve karte hai
+
+* kafka cluster : group of kafka servers or brokers
+* kafka broker : kafka ka server,stores and distributes messages.
+
+ // Is apache kafka a cluster?
+  Yes, Apache Kafka is designed to be deployed as a distributed system, meaning it operates as a cluster of multiple servers (brokers) 
+  working together to manage and distribute data streams. 
+
+               //   Components of a Kafka Cluster (chat gpt se)
+                  Brokers – Servers that store and serve messages. A cluster consists of multiple brokers.
+                  Topics – Logical channels where messages are published. Each topic is split into partitions.
+                  Partitions – A topic is divided into partitions to allow parallel processing.
+                  Producers – Clients that publish messages to topics.
+                  Consumers – Clients that read messages from topics.
+                  Consumer Groups – A set of consumers working together to process messages.
+                  Zookeeper – Manages metadata, leader election, and broker coordination.
+
+
+
+* kafka producer: ye kya karega ye write karta hai data into cluster
+* kafka consumer: uus data ko utha lega consumer
+* zookeeper: kafka cluster ko manage karta hai
+* kafka connect : data laa sakte ho bahar se like db se
+* kafka stream : kuch functioanlity to use for data transformation
+* me using kafka version 3 for study --- 
+  some commands : 
+  
+//  NSTALLATION COMMANDS
+
+zookeeper-server-start.bat ..\..\config\zookeeper.properties
+
+kafka-server-start.bat ..\..\config\server.properties
+
+kafka-topics.bat --create --topic my-topic --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
+
+kafka-console-producer.bat --broker-list localhost:9092 --topic my-topic
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic my-topic --from-beginning
+
+// SENDING MESSAGES COMMANDS
+
+zookeeper-server-start.bat ..\..\config\zookeeper.properties
+
+kafka-server-start.bat ..\..\config\server.properties
+
+kafka-topics.bat --create --topic foods --bootstrap-server localhost:9092 --replication-factor 1 --partitions 4
+
+kafka-console-producer.bat --broker-list localhost:9092 --topic foods --property "key.separator=-" --property "parse.key=true"
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic foods --from-beginning -property "key.separator=-" --property "print.key=false"
+
+Steps: 
+
+1) kafka server install in my local machine basically its a server
+2) start zookeeper and kafka broker
+3) create topic using by going bin/window/ in cmd , topic is just like a table to store data
+
+/////////// ****** kafka topic ***********
+
+1) named container for a similar events , Unique identifier of a topic is its name, example: student will have student related data , food topic have food related data 
+2) they are like tables in database
+3) they live inside a broker
+4) Producer produce the message into the topic (ulimately to partitions in round robin fashion) or directly to the partions. consumer call continously for new messages using the topic
+   name
+5) Partition: A topic is partioned and distributed to Kafka brokers in round robin fashion to achieve distributed system .
+6) Replication factor: partioned get replicated by this factor and its is replicated in another broker to prevent fault tolerance.  
+
+
+
+Partitions
+A topic is split into several parts, which are known as the partitions of the topic.
+
+Partitions are where actually the message is located inside the topic.
+
+Therefore, while creating a topic, we need to specify the number of partitions (the number is arbitrary and can be changed later).
+
+Each partition is an ordered, immutable sequence of records.
+
+Each partition is independent of each other.
+
+Each message gets stored into partitions with an incremental ID known as its Offset value.
+
+Ordering is there only at the partition level. (So, if data is to be stored in order, then do it on the same partition.)
+
+Partition continuously grows (offset increases) as new records are produced.
+
+All the records exist in a distributed log file.
+
+* agar round robin hoga matlab message distribute hora hai among the partiotion but mai chahte hu ki ordering follow kare to key value me karne padega.
+
+p1  "1"  "4"
+
+p2  "2"  "5"
+
+p3  "3"  "6"
+
+*  jab mai data ya message send karunga key value to partioning picture me aa jayega and wo use karega hashing partion me save karne k liye, ek key k corresponding ek Partition hoga
+   and partition dynamically grow nahi hote fixed hote hai during topic creation , agar partition full ho jata hai to jo old messaage expire hote rahte hai according to there retention
+   policy.   
+*  You can manually increase partitions, but existing messages stay in their original partitions.   
+Example ::: 
+
+producer                          consumer (it will prduce result in order according to key , key can be same , it will save data in partion according to key)
+
+create Topic fruits                Topic Fruits 
+
+hello-banana                       banaana
+hello -kiwi                        kiwi
+hello-lemon                        lemon 
+bye - orange                       orange
+bye - mango                        mango
+
+* Ab baat karte hain // consumer offset and cosumer group ki
+
+* consumer kese consume kar raha hai message
+
+* consumer offset ::: consumer ki kya specific position hai topic k partion me, wo kaunsa message padh raha hai, latest messaage repsesent karta hai
+
+chat gpt example:
+
+In Apache Kafka, the Producer and Consumer are the key components responsible for sending and receiving messages. Here's how they work:
+
+1. Producer (Message Sender)
+  The producer is responsible for publishing messages to a Kafka topic. It sends data to one or more partitions of a topic. Kafka ensures fault tolerance and 
+  durability by storing messages in a distributed manner.
+  Producers can choose a partitioning strategy (round-robin, key-based, etc.).
+  Messages are stored in Kafka until the retention period expires.
+
+Example Workflow:
+
+A producer (e.g., an order service) sends an "Order Created" event to the topic "orders".
+Kafka stores this message in one of the topic's partitions.
+The message remains in Kafka until it is consumed or expires based on retention settings.
+
+2. Consumer (Message Receiver)
+The consumer reads messages from a Kafka topic.
+It belongs to a consumer group (multiple consumers can consume messages in parallel).
+Kafka ensures at-least-once delivery, meaning the message is retained until acknowledged.
+Consumers pull messages at their own pace (Kafka does not push messages).
+Each message in a partition is read sequentially.
+
+Example Workflow:
+
+A consumer (e.g., an email service) subscribes to the "orders" topic.
+Kafka delivers the messages from the topic's partition to the consumer.
+The consumer processes the message (e.g., sends a confirmation email to the customer).
+Once processed, Kafka updates the consumer's offset to avoid reprocessing.
+Key Kafka Concepts Related to Producer-Consumer
+Topics: Logical categories where messages are stored.
+Partitions: Topics are divided into partitions for parallelism and scalability.
+Consumer Groups: Multiple consumers can consume from a topic together while balancing the load.
+Offsets: Kafka tracks which messages a consumer has already read.
+
+// **************
+
+suppose i am using kafka and i have produced message like message1 , message2,message3 so which message is gonna consume first 
+ChatGPT said:
+In Kafka, message consumption order depends on partitions and consumer groups. Let's analyze how messages (message1, message2, message3) will be consumed.
+
+1. If There Is Only One Partition
+Messages are stored sequentially in the partition.
+Order is guaranteed per partition.
+The consumer will receive messages in the same order they were produced.
+✅ Consumption Order:
+message1 → message2 → message3
+
+2. If There Are Multiple Partitions
+Messages are distributed across partitions based on the producer's partitioning strategy (e.g., round-robin, key-based).
+Order is guaranteed within a single partition, but not across multiple partitions.
+📌 Example: 2 Partitions
+
+Partition	Messages
+Partition-0	message1, message3
+Partition-1	message2
+If there are two consumers in the same group, each will consume messages from different partitions.
+Consumer-1 might receive message1 → message3, while Consumer-2 gets message2 first.
+
+Since message1 and message3 are in different partitions, they may be processed out of order globally.
+❌ Global order is not guaranteed.
+✅ Order is guaranteed per partition.
+
+3. What If a Consumer Fails?
+Kafka reassigns partitions to another available consumer.
+The new consumer picks up from the last committed offset.
+Example:
+
+If Consumer-1 fails while processing message1, another consumer in the same group will take over from message1.
+No message loss, but rebalancing may cause delays.
+
+Summary:
+
+Scenario	Order Guaranteed?	Explanation
+Single partition, single consumer	✅ Yes	Messages are consumed in the same order as produced.
+Multiple partitions, multiple consumers	❌ No	Order is only maintained per partition, but not globally.
+Partition reassignment (Consumer failure)	✅ Per partition	Another consumer picks up from the last committed offset.
+
+Final Answer:
+If there is one partition, message1 will be consumed first.
+If there are multiple partitions, it depends on partitioning, and global order may not be maintained.
+
+// but where all the data is getting stored 
+
+* in a file/folder system , go to config open cmd ,do cd /tmp/kafka-log/ and type dir , than u will see topics folder than cd the folders u will see .log file
+
+* retention policy is  based on size of the file and time
+
+* abhi kya hai mai kafka cluster me sirf ek he kafka broker chala raha tha ,,, not i want to run more 
+  make a copy for server.properties and change the name ... change port, broker id and log file location log to log1
+  
+  ab ye to sari kahani thi kafka server local pe but ab hum use karenge cloud wala 
+  
+  
+////////  kafka cloud use karenege , Confluent
+
+* make an account CONFLUENTDEV1: This promo code allows you to delay entering a credit card for 30 days. 
+* make  a topic than copy paste all api key setting in application.properties and set consumer and producer , check the journal app on git for further ...
+
+
+//// JWT ////////
+
+* muje data lena dena karna hai do clients k beech, le to sakte hai but securely kese lenge JWT ki help se , information carry karta hai in JOSN format
+* URL safe hota hai matlab & and + like that use nahi karta hai
+* JWT ======= Header.Payload.Signature
+* Header k andar hota hai token type and alog
+* payload k andar typically user metadata hota hai 
+* signature -- header ko encode kargenge base64Url me + "." + payload ko encode kargenge base64Url me and secret key k sath sign kar denege using algorthim
+
+
+// information
+
+Why is HTTPS Safe?
+
+HTTPS (HyperText Transfer Protocol Secure) is safer than HTTP because it uses encryption, authentication, and integrity mechanisms to protect data transmitted between a client (browser) and a server.
+
+HTTPS Uses Encryption (Prevents Eavesdropping)
+HTTPS uses SSL/TLS (Secure Sockets Layer / Transport Layer Security) to encrypt data.
+Encryption ensures that even if a hacker intercepts the data, they cannot read or modify it.
+
+🔒 Example:
+🔹 HTTP Request:
+
+GET /login?username=admin&password=123456
+
+🔹 A hacker can see the username & password in plain text.
+
+🔐 HTTPS Request (Encrypted):
+
+
+ H2!sd@12dHhs82j1s== (Encrypted Data)
+🔹 A hacker intercepting this cannot read the credentials.
+
+
+
+  
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,94 @@
+Java 8 why ?
+
+* for small and concise code
+* introduce functional prgramming --  u can pass the function as an argument
+* parallel programming to utilise multiple core of the CPU 
+
+
+Feautures --- 
+
+1) Lamda function (anonymous function) -> we have functional interface in java 8 , to give implementtation of any interface there are two ways you can give 
+   implement the interface using class or make anonymous class
+   ex -  FunctionalInterfaceDemo demo = new FunctionalInterfaceDemo(
+   
+   @Override
+   void somemethod(int a , int b){
+      return a+b;
+   }
+   
+   );
+
+   lammda function is nothing writing this in more concise way 
+    ex - (a,b)-> a+b;
+	
+	variable use in lamda is final 
+	ex:
+	
+	public void function(){
+	
+	int a = 2;
+	
+	()->{
+	
+	a = 3; // error cant change value coz it's final 
+	// solution is make variable instance
+	
+	}
+}
+	
+	benefits: enable functional programming , code reduction, enable parallel processing, elemination of shadow vars 
+    
+  
+
+2) Stream API -  convert list to stream for better operation
+
+3) Date and time API
+
+4) Base64 encode and decode
+
+5) method and constructor refrence
+
+6) default and static method in interface  
+
+  ---> method which have body with default keyword in interface can be overridden
+  ---> method which have body with statuc keyword in interface can not be overridden
+ 
+
+
+7) functional interface
+
+8) Optional class
+
+9) Java IO improvements , Collection API improvements
+
+
+
+Functional Interfaces:::
+
+Predicate 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

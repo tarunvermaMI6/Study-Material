@@ -1,0 +1,67 @@
+
+john -- 40
+
+jane - 60
+
+smith -- 70
+
+listEmp.stream.filter(x->{
+
+if(x.getSalary()>50){
+  
+  return true;
+}
+
+return false;
+
+}).collect(Collectotrs.tolist();
+
+
+
+class A{
+
+
+int a = 10;
+
+
+}
+
+
+class B extends A{
+
+int a = 5;
+
+
+}
+
+
+
+class C {
+
+main (){
+
+  B b = new B(); 
+  
+  print(b.a);
+  
+  A aa = new B();
+  
+  print(aa.a);
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

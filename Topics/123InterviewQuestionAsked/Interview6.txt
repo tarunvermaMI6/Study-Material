@@ -1,0 +1,99 @@
+
+
+Find first non-repeated character in string
+ 
+ 
+String str = swiss
+ 
+output = w
+ 
+char [] arr = str.toCharArray(); 
+
+ Stream.of(arr).collectors(Collectors.groupingCount(),x->x); // it will give map of count chars
+ 
+
+////////// 
+
+
+char [] arr = str.toCharArray();
+
+
+LinkedHashMap<Char,Integer> map = new LinkedHashMap<>();
+
+for(int i=0; i<arr.length; i++){
+
+ if(map.contains(arr[i])){
+ 
+ map.put(arr[i],map.get());
+ 
+ }
+
+}
+
+
+
+Write query to find second highest employee salary
+
+
+select * from employee order by desc limit 1 offset 1;
+
+
+Given list of integers from 1 to N in which exactly one number is missing.
+
+write a program to find that no.
+
+N = 5
+list= [5,3,4,2]
+ 
+ 
+output = 1
+
+
+EC2 --  Elastic Compute Cloud.
+
+Name    Grade
+Nikhil    A
+Jatin     B
+Manish    A
+ 
+make all A to B and B to A
+
+
+
+select * from student where grade = 'A' 
+
+
+update student set grade = replace(grade,'A') where grade = 'B'
+
+
+update student set grade = replace(grade,'B') where grade = 'A'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,108 @@
+Notes: https://engineeringdigest.medium.com/multithreading-in-java-39f34724bbf6
+
+The Executors class provides different thread pool implementations:
+
+Thread Pool Type	Method	Description
+Fixed Thread Pool	Executors.newFixedThreadPool(n)	✅ Uses n fixed threads. Best for a consistent number of tasks.
+Cached Thread Pool	Executors.newCachedThreadPool()	✅ Creates new threads as needed but reuses idle threads. Best for short-lived tasks.
+Single Thread Pool	Executors.newSingleThreadExecutor()	✅ Uses only 1 thread, executing tasks sequentially. Best for task ordering.
+Scheduled Thread Pool	Executors.newScheduledThreadPool(n)	✅ Executes tasks with a delay or at fixed intervals. Best for scheduled tasks.
+
+********************** Questions *******************************
+
+Chat GPT.
+If you have 5+ years of experience, you’ll be expected to explain concepts in-depth, solve real-world problems, and optimize multi-threaded applications. Below is a structured list of Core, Advanced, and Real-World Problem-Solving questions.
+
+🔹 1. Core Multithreading Concepts
+✔ Basic Concepts and Thread Management
+1️⃣ What is multithreading in Java? How does it improve performance?
+2️⃣ Difference between process vs thread?
+3️⃣ How do you create a thread in Java?
+4️⃣ Difference between **Runnable vs Thread class**? 5️⃣ How do you stop a thread in Java? Why is stop() deprecated? 6️⃣ Explain the **lifecycle of a thread** (NEW, RUNNABLE, BLOCKED`, etc.).
+7️⃣ What is Thread Priority? How does it affect scheduling?
+
+✔ Thread Methods & Synchronization
+8️⃣ What is the difference between sleep() and wait()?
+9️⃣ Difference between yield(), sleep(), and join()?
+🔟 Explain interrupt(). How does an interrupted thread behave?
+1️⃣1️⃣ What is daemon thread? Give an example.
+1️⃣2️⃣ Can we restart a thread after it has finished execution?
+1️⃣3️⃣ What happens if you call start() twice on the same thread?
+
+🔹 2. Thread Synchronization & Communication
+✔ Synchronization Mechanisms
+1️⃣4️⃣ What is thread synchronization? Why is it needed?
+1️⃣5️⃣ What is the difference between synchronized method and synchronized block?
+1️⃣6️⃣ Can we use static synchronization? What happens?
+1️⃣7️⃣ What is thread starvation and thread fairness?
+1️⃣8️⃣ What is re-entrant locking in Java?
+1️⃣9️⃣ How does Java ensure atomicity in concurrent operations?
+
+✔ Inter-Thread Communication (wait(), notify(), notifyAll())
+2️⃣0️⃣ How do wait(), notify(), and notifyAll() work?
+2️⃣1️⃣ Why should wait() and notify() be called inside a synchronized block?
+2️⃣2️⃣ What happens if a thread calls wait() outside synchronized?
+
+✔ Locks and Deadlocks
+2️⃣3️⃣ What is a deadlock? How do you detect and prevent it?
+2️⃣4️⃣ Explain Livelock and Starvation. How are they different?
+2️⃣5️⃣ How does ReentrantLock work? How is it better than synchronized?
+2️⃣6️⃣ What is the use of tryLock() in ReentrantLock?
+2️⃣7️⃣ What are read-write locks? How do they work?
+2️⃣8️⃣ How does ThreadLocal work? Where is it used?
+
+🔹 3. Executor Framework & Thread Pools
+✔ Executor Service Basics
+2️⃣9️⃣ What is the Executor Framework? How is it better than new Thread()?
+3️⃣0️⃣ Explain different types of Thread Pools (Fixed, Cached, Scheduled, SingleThreadExecutor).
+3️⃣1️⃣ How do you gracefully shut down an ExecutorService?
+3️⃣2️⃣ Difference between shutdown() and shutdownNow()?
+3️⃣3️⃣ What happens if you submit a task after shutting down an executor?
+
+✔ Callable, Future, and Completion Service
+3️⃣4️⃣ How is Callable different from Runnable?
+3️⃣5️⃣ What is Future? How do you get results from a thread?
+3️⃣6️⃣ What is CompletableFuture? How is it better than Future?
+3️⃣7️⃣ How does ScheduledThreadPoolExecutor work?
+
+✔ Fork/Join Framework (Advanced)
+3️⃣8️⃣ What is the Fork/Join framework? When should you use it?
+3️⃣9️⃣ Difference between RecursiveTask and RecursiveAction?
+
+🔹 4. Advanced Concurrency & Performance Optimization
+✔ Concurrency Utilities (java.util.concurrent)
+4️⃣0️⃣ What is CountDownLatch? Give an example.
+4️⃣1️⃣ What is CyclicBarrier? How is it different from CountDownLatch?
+4️⃣2️⃣ Explain Semaphore with an example.
+4️⃣3️⃣ How does BlockingQueue work? When should you use it?
+4️⃣4️⃣ What is the difference between ConcurrentHashMap and HashMap?
+4️⃣5️⃣ What is CopyOnWriteArrayList? When is it useful?
+4️⃣6️⃣ What is AtomicInteger? How is it different from a normal int?
+4️⃣7️⃣ Explain the difference between volatile, synchronized, and Atomic variables.
+
+✔ Real-World Performance Issues
+4️⃣8️⃣ What is false sharing? How does it affect performance?
+4️⃣9️⃣ How do you prevent thread contention?
+5️⃣0️⃣ What is Thread Dump? How do you analyze thread states?
+5️⃣1️⃣ How do you debug high CPU usage due to multithreading?
+5️⃣2️⃣ What are Lock-Free Data Structures?
+
+🔹 5. Real-World Scenarios & System Design
+✔ Scenario-Based Questions
+5️⃣3️⃣ You have 1 million tasks. Which thread pool should you use?
+5️⃣4️⃣ You see a deadlock in production. How do you debug it?
+5️⃣5️⃣ How do you optimize a multi-threaded application for better CPU utilization?
+5️⃣6️⃣ You need to process tasks in order but using multiple threads. How do you do it?
+5️⃣7️⃣ How do you implement batch processing with multiple threads?
+
+✔ Concurrency Design Patterns
+5️⃣8️⃣ What is the Producer-Consumer Pattern? Implement it.
+5️⃣9️⃣ What is the Thread Pool Pattern? When should you use it?
+6️⃣0️⃣ What is the Read-Write Lock Pattern?
+
+🔹 Summary: Key Focus Areas for 5+ Years Experience
+✅ Thread Basics: Creating and managing threads (Runnable, Callable, Executors).
+✅ Synchronization: synchronized, ReentrantLock, volatile, Atomic variables.
+✅ Inter-Thread Communication: wait(), notify(), CountDownLatch, CyclicBarrier.
+✅ Thread Pools & Performance: ExecutorService, Future, ForkJoinPool.
+✅ Problem Solving: Debugging deadlocks, optimizing CPU-bound and IO-bound tasks.

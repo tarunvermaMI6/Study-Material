@@ -1,0 +1,74 @@
+
+* Servlet: A Servlet is a Java program that runs on a server and handles HTTP requests & responses. 
+  It is part of the Java EE (Jakarta EE) framework and is used to create dynamic web applications.
+  
+* Servlet Container : A Servlet Container (also known as a Web Container) is a part of an application server that manages servlets by handling HTTP requests 
+  and responses,managing the servlet lifecycle, and providing built-in services like security, session management, and concurrency handling.  
+* Is a Servlet Container Inside an Application Server?
+  Yes, an Application Server includes a Servlet Container as part of its functionality.
+  A Servlet Container is responsible for handling servlets, JSPs, and managing HTTP requests, whereas an Application Server provides additional features like EJB 
+ (Enterprise JavaBeans), transaction management, security, and database connectivity.   
+ 
+ * A Servlet Container is a part of an Application Server, but it can also exist independently (like Tomcat, Jetty).
+   An Application Server includes a Servlet Container along with EJB Container, JMS, JNDI, and other enterprise features.
+   
+* Tomcat (Servlet Container) and JBoss/WildFly (Application Server)
+* Yes, Apache Tomcat is a Java web application server. It's also a Servlet container and web server.    
+* Unit testing will get affect if there are tight coupling, DI needed to write test cases of particular class.
+* Dispatcher Servlet(first controller) , HandlerMapping
+* see capture image of spring boot layered arch in mobile.
+* maven is Project management tool and it defines how to do things and every pom.xml has super parent pom.xml,  
+
+    <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	
+	it means our pom.xml is a child of spring-boot-starter-parent
+	
+* annotations
+* IOC is a container where all the objects get stored when the app start and it resolves all the dependecies at runtime and also manage the object lifecycle.
+* Application context is a way to achieve IOC,
+* how IOC contains the objects ? Through scanning it scan the package which have annotations @ComponentScan but consider classes only with @Component.
+* first thing - spring singleton bean , spring IOC creates one object of a class and share among all means its based on singleton pattern and it's not thread safe
+* https://www.youtube.com/watch?v=no0NTy51bGo
+* Bean Scope : Singleton , prototype , request, session , globalSession
+* thread saftey in spring web app
+* Internal working of Spring boot? Explain this : IOC Container, @ComponentScan, @Component, @SpringBootApplication
+* @SpringBootApplication ---  @SpringbootConfiguration @EnableAutoConfiguartion @ComponentScan
+* When an interviewer asks about Spring Boot's internal working, 
+  they want to test your understanding of its core architecture, auto-configuration, and dependency management.
+   check chat gpt 
+
+* why we use bean ? Objects that is created or handle by spring IOC is called bean and it is done to achieve loose coupling and DI.
+* @Bean - to explicitly define a method that creates and configures a bean, allowing you to control how an object is instantiated and managed by the Spring IoC 
+  container,   
+* java.lang.Thread class provides the join() method which allows one thread to wait until another thread completes its execution. 
+  If t is a Thread object whose thread is currently executing, then t.join() will make sure that t is terminated before the next instruction is executed by 
+  the program.
+
+* The @Bean annotation in Spring is used to define and manage beans explicitly in a Spring application. It is typically used inside a @Configuration class to create Spring-managed beans programmatically.
+
+* Explicit Bean Creation → Used when you cannot use @Component, @Service, or @Repository annotations (e.g., for third-party classes).
+✅ Customization → Allows custom initialization and configuration of beans.
+✅ More Control → Supports lazy loading, dependency injection, and factory methods.
+  example in our spring mvc application we are making a bean of jdbc.datasource.DriverManagerDataSource
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

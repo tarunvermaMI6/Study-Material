@@ -1,0 +1,32 @@
+
+Given list of integers from 1 to N in which exactly one number is missing.
+
+write a program to find that no.
+
+N = 5
+list= [5,3,4,2]
+ 
+ 
+output = 1
+
+
+let the series == 1,2,3,4,5
+
+Hashmap<Integer,Integer> map = new Hashmap();
+for(int i=1; i<list.size; i++){
+
+map.put(list.get(i),list.get(i)); /// or i can use hashset
+
+}
+
+for(int i=1; i<=n; i++){
+
+ if(map.contains(i)){
+
+ }else{
+ 
+  syso(i);
+ 
+ }
+
+}

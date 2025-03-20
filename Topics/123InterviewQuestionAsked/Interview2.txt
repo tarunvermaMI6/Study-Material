@@ -1,0 +1,90 @@
+
+
+User{
+
+
+String name;
+
+@OneTOMany("")
+@
+List<Address> addeesses;
+
+
+
+}
+
+
+
+Address{
+
+
+/// 
+
+}
+
+
+class SingletonDemo{
+
+
+private static  SingletonDemo singletonDemo = null;
+
+
+private SingletonDemo(){
+
+
+}
+
+public static SingletonDemo getInstance(){
+
+  if(singletonDemo == null){
+  
+  synchronised (SingletonDemo.class){
+  
+  if(singletonDemo == null){
+  
+  return new SingletonDemo();
+  
+  }
+  
+  }
+  
+  
+  
+  }
+
+return singletonDemo;
+}
+
+}
+
+
+hibernate one to many impl
+comparator vs comparable
+volitile
+why static method in java 8
+Design Pattern
+dispatcher servlet
+why hashmap doesnt preserve order, working of linkedhashmap
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

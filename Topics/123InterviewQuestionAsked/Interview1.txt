@@ -1,0 +1,71 @@
+
+
+empList.stream.filter(emp->{
+
+ if(emp.getAge()>50 && emp.getSalary<50000){
+  
+  return true;
+ }
+
+return false;
+
+}).sorted(Comparator.comparing(Emp::getName))
+.collect(Collectors.toList());
+
+List<Employee> sortedDesc = employees.stream()
+        .sorted(Comparator.comparing(Employee::getName).reversed()) // for desc
+        .collect(Collectors.toList());
+
+
+int a=200;
+
+print(a++); // 201
+print(++a); // 201
+print(a--); // 201
+print(--a); // 201
+
+
+for(int i=1; i<=10; i++){
+system.out.prinltn(i);
+}
+
+
+int n = 1;
+while(n<=10){
+system.out.prinltn(n);
+n++;
+
+}
+
+foreach
+
+int [] arr = {1,2,3,4,5,6,7,8,9,10};
+
+for(int n: arr){
+
+system.out.prinltn(n);
+}
+
+
+Select name,count(EmpId) as count from Employee having count>1;  
+
+select * from employee order by desc sno  offset(1);
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

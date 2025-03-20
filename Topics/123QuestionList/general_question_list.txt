@@ -1,0 +1,488 @@
+
+LazyInitializationException when does it occur 
+
+countdownlatch in multithreading 
+
+hashcode and equals method 
+
+what it takes in arguments 
+
+how many number of tables in database are created when student have manytomany relation with books
+
+callable returns some result and throw exception 
+
+find the second-highest frequency character in a string. (o(N)) 
+
+
+Optimistic vs pessimistic locking 
+
+Various scope of bean 
+
+New Annotation introduces in spring boot  which are not present in Spring 
+
+If `Class A` is using a `Class B` bean, which is of prototype scope, and `Class C` is using `Class A` as a bean and accesses `Class B` through `Class A`, 
+will `Class B` behave as a singleton or prototype in `Class C`?
+
+
+* What improvements have been made in garbage collectors after Java 8? 
+
+Question on Dead letter queue (scenario based q) Fork Join Pool Difference between interface and abstract class in java 8 
+
+How is multiple inheritance achieved via interfaces in Java, and what happens if the same default method is present in both interfaces. 
+
+problems in HashMap and how they were addressed in later Java versions. TC and which data structure we used. 
+
+Template method design pattern Singleton double check locking
+
+Class Student {   Int marks   String name } Write a single java 8 stream operation to print the name of student having second highest marks.
+
+encapsulation
+inheritance
+multiple inheritace not support
+lazy and eager loading
+clustered and non clustered indexe
+serialization
+explain propagation and isolation level in spring
+jpa and hibernate key diff
+diff b/w let, var, and const
+
+implicit obj in jsp
+
+normalization
+
+jwt token
+
+How does Java achieve memory management
+
+Explan heap, stack,garbagecollection
+
+program first non repeating character in a string
+
+functional interface
+ 
+marker interface
+ 
+terminal operation 
+ 
+map vs flatmap
+ 
+concurrent modification exception
+ 
+completable future
+
+Difference between Hashmap vs cuncurrent hashmap ? 
+
+
+How would you design and implement a system to detect fraudulent transactions in real time for a financial institution?
+
+What is spring security? 
+
+Explain Spring AOP and Spring hibernate? 
+
+explain Aspect, Advice, pointcut? 
+
+what is sessionFactory
+
+
+
+what is Design pattern
+what is singlton,
+
+Singleton ex
+class 
+
+what design pattern you can use
+
+behaviorl
+
+factory design pattern
+
+
+you have a list user
+sort using collection by username
+
+functional interface
+abstract 
+
+encapsulation
+
+Solid principles, multithreading questions and java stream questions
+
+Internal working of hashmap and linked list
+
+Sort the words in dictionary order and the input is Dog, Banana, Cat, Apple, Elephant.
+
+Bubble sort 2. Second largest element in array
+
+
+* Print all duplicate elements in an Array
+* Java Exception Handling and Spring exception handling.
+
+* Spring IOC and types.
+Ans:   Spring IOC (Inversion of Control) is a design pattern where the control of object creation and lifecycle is shifted to a container.
+       In Spring IOC, objects are created and managed by the Spring container.
+       Types of Spring IOC include Constructor-based dependency injection and Setter-based dependency injection.
+       Example: In Constructor-based dependency injection, dependencies are provided through the constructor of a class.
+       Example: In Setter-based dependency injection, dependencies are provided through setter methods of a class
+
+Q6. Circuit Breaker and its states
+Ans. Circuit Breaker is a design pattern used in software development to prevent system overload and failures.
+Circuit Breaker monitors the number of failures and opens when a threshold is reached.
+
+It can be in states like closed, open, or half-open.
+
+Closed state allows normal operation, open state prevents further requests, and half-open state allows limited requests to check if the system is back to normal.
+
+Examples include H
+
+
+Q7. Design Pattern
+
+* Get the third highest salary from employee table
+
+* Valid parentheses from leetCode
+
+* Stream.map() transforms each element in a stream, while Stream.flatMap() transforms each element into a stream of values.
+ map() applies a function to each element in a stream and returns a new stream with the transformed elements.
+
+ flatMap() applies a function that returns a stream for each element in the original stream, then flattens the streams into a single stream of values.
+
+ Example: map() - Stream.of(1, 2, 3).map(x -> x * 2) returns Stream.of(2, 4, 6).
+
+ Example: flatMap() - Stream.of(Arrays.asList(1, 2), Arrays.asList(3, 4)).flatMap(List::stream) returns Stream.of(1, 2, 3, 4).
+
+
+* Lambda, reduce()
+
+* Sync Api vs Async Api, Sync Microservice and Async microservice example
+
+Ans. Sync API waits for a response before continuing, while Async API allows the program to continue executing without waiting for a response.
+Sync API is blocking and waits for a response before proceeding
+
+Async API is non-blocking and allows the program to continue executing while waiting for a response
+
+Sync microservice handles requests sequentially, while Async microservice can handle multiple requests concurrently
+
+Example of Sync API: REST API that waits for a response before returning data
+
+Example of Async API: Websocket API that allows real-time communication without blocking
+
+Example of Sync microservice: Traditional monolithic application that processes requests one at a time
+
+Example of Async microservice: Event-driven architecture that can handle multiple requests simultaneously
+
+* Q5. Write a REST api to fetch user details using userId.
+ 
+ Ans. Create a REST api to fetch user details using userId
+ Create a GET endpoint /users/{userId} to fetch user details
+
+ Use userId as a parameter in the endpoint
+
+ Return user details in JSON format
+
+ Handle errors for invalid userId
+
+Q6. SOLID Principle and best coding practices
+
+Ans. SOLID principles and best coding practices are essential for creating maintainable and scalable software.
+
+S - Single Responsibility Principle: Each class should have only one responsibility.
+
+O - Open/Closed Principle: Classes should be open for extension but closed for modification.
+
+L - Liskov Substitution Principle: Subtypes should be substitutable for their base types.
+
+I - Interface Segregation Principle: Clients should not be forced to depend on interfaces they do not use.
+
+D - Dependency Inversion Principle: High-level modules should not depend on low-level modules; both should depend on abstractions.
+
+
+Q7. Write a global exception handler class to handle UserNotFound exception.
+
+Ans. Create a global exception handler class for UserNotFound exception.
+Create a class that extends ExceptionHandler class
+
+Override the handleException method to handle UserNotFound exception
+
+Implement the logic to handle the exception, such as logging or returning a custom error message
+
+
+* Advantages of IOC in spring and DI
+
+Ans. IOC in Spring and DI offer flexibility, maintainability, and testability in software development.
+Promotes loose coupling between components
+
+Allows for easier unit testing and mocking
+
+Facilitates easier configuration and management of dependencies
+
+Enables better separation of concerns
+
+Promotes reusability of components
+
+
+* Q1. How did you implement multithreading in your project?
+Ans. Implemented multithreading using Java's Thread class and Executor framework.
+Used Thread class to create and manage threads.
+
+Utilized Executor framework for managing thread pools and executing tasks.
+
+Implemented synchronization mechanisms like locks and semaphores to prevent race conditions.
+
+Used Java's concurrent data structures like ConcurrentHashMap and BlockingQueue for thread-safe operations.
+
+
+Q2. What is the concept of lock isolation in Spring Framework?
+Ans. Lock isolation in Spring Framework ensures that each transaction operates independently without interfering with other transactions.
+Lock isolation prevents concurrent transactions from affecting each other's data.
+
+Different levels of lock isolation can be set in Spring, such as READ_COMMITTED and REPEATABLE_READ.
+
+For example, setting a higher level of lock isolation like REPEATABLE_READ ensures that a transaction will not see changes made by other transactions until it is completed.
+
+
+
+
+Q3. What is the purpose of the @Primary and @Qualifier annotations in Spring Framework?
+Ans. The @Primary annotation is used to give a higher priority to a bean when multiple beans of the same type are present. The @Qualifier annotation is used to specify which bean to inject when multiple beans of the same type are present.
+Use @Primary annotation to specify the primary bean to be used when multiple beans of the same type are present.
+
+Use @Qualifier annotation along with the bean name to specify which bean to inject when multiple beans of the same type are present.
+
+Example: @Primary annotation can be used with a bean that should be given higher priority, while @Qualifier annotation can be used to specify a specific bean to be injected.
+
+
+Q4. How do you implement security measures for your microservices?
+Ans. Implementing security measures for microservices involves using authentication, authorization, encryption, and monitoring.
+Implement authentication mechanisms such as OAuth, JWT, or API keys to verify the identity of clients accessing the microservices.
+
+Enforce authorization rules to control access to different parts of the microservices based on roles and permissions.
+
+Use encryption techniques like TLS/SSL to secure communication between microservices and external clients.
+
+Implement monitoring and logging to detect and respond to security threats in real-time.
+
+Regularly update dependencies and libraries to patch security vulnerabilities.
+
+
+
+Q5. Handling distributed transactions in microservices using the Saga pattern?
+Ans. Saga pattern is used to manage distributed transactions in microservices by breaking them into smaller, independent transactions.
+Saga pattern involves breaking down a long transaction into a series of smaller, independent transactions.
+
+Each step in the saga is a separate transaction that can be rolled back if needed.
+
+Compensating transactions are used to undo the effects of a previously completed step in case of failure.
+
+Sagas can be implemented using choreography or orchestration.
+
+Choreography involves each service knowing how to trigger the next step, while orchestration involves a central coordinator managing the flow.
+
+
+Q1. Given an array of non-negative integers.Find the length of the longest subsequence such that elements in the subsequence are contiguous integers. The consecutive numbers can be in any order. Example n=7 nums={2,6,1,9,4,5,3} output = 6
+Ans. Find the length of the longest subsequence of contiguous integers in an array.
+Sort the array
+
+Iterate through the array and check for consecutive integers
+
+Keep track of the longest subsequence found
+
+
+
+Q2. Get list of pincodes from these objects Employee{ id Long, name String, Addresses : List } Addresses{ houseNo long, pindcode long, state String, country String, } Ans. Use flatMap to flatten and then use m...read more
+Ans. Use flatMap and map to extract list of pincodes from Employee objects
+Use flatMap to flatten the list of Addresses in each Employee object
+
+Use map to iterate over the flattened list and extract the pincodes
+
+Example: employeeList.stream().flatMap(emp -> emp.getAddresses().stream()).map(address -> address.getPincode()).collect(Collectors.toList())
+
+
+Q3. What is Database Pooling, Hikari and its configurations. Java 8 to current enchancements and current java version Factory and Builder design patterns to explain and code Project expalantion and details, Cr...read more
+Ans. Database pooling is a technique used to manage a pool of database connections for efficient resource utilization. HikariCP is a popular database connection pooling library in Java.
+HikariCP is a high-performance database connection pooling library for Java applications.
+
+It is known for its low latency and high throughput.
+
+Configurations for HikariCP include settings such as maximum pool size, connection timeout, and idle timeout.
+
+Example: HikariConfig config = new HikariConfig(); config.setMaximumPoolSize(10);
+
+Java 8 introduced features like lambda expressions, streams, and the new Date and Time API.
+
+Current Java versions have further enhancements in performance, security, and language features.
+
+Factory design pattern is used to create objects without exposing the instantiation logic to the client.
+
+Builder design pattern is used to construct complex objects step by step.
+
+Example: StringBuilder in Java uses the Builder pattern to construct strings efficiently.
+
+
+Q3. Hashmap iteration ways
+Ans. There are multiple ways to iterate over a HashMap in Java.
+Using keySet() and values() methods
+
+Using entrySet() method
+
+Using forEach() method with lambda expression
+
+
+Q5. Write API to save data
+Ans. API to save data in Java
+Use HTTP POST method to send data to the server
+
+Create a RESTful endpoint to handle the data saving
+
+Validate the input data before saving it to the database
+
+DSA Questions 1. Balanced Parenthesis 2. String Compression - Check on Leetcode
+
+Code a system to query an API, do multiprocessing and improve the efficiency
+
+Leetcode problem: ZigZag Conversion
+
+Reduce HashMap collision
+
+Separate 0 and 1 and then store in the sme array
+
+Designing parking system
+Ans. Designing a parking system for efficient management of parking spaces.
+Utilize sensors to detect available parking spaces
+
+Implement a reservation system for users to book parking spots in advance
+
+Incorporate a payment system for users to pay for parking
+
+Include a monitoring system to track occupancy levels and manage traffic flow
+
+
+In given array find the sum a*a+b*b=c*c
+
+Two sum problem
+
+CompletableFuture
+
+
+Write a program to find all permutations of a given string?
+
+Q1. Reverse a linked list
+
+Q4. 4.Linked list Vs Arraylist
+
+Write a program to get the middle of the linked list in a single iteration? Ans - Two pointers , slow fast
+
+RequestMapping vs Postmapping?
+
+Q8. 8. Singleton in java . And how singleton can be broken
+
+Q9. 9. What is @SpringBootApplication?
+
+Why do we need maven clean and install?
+
+
+How do you secure your APIs?
+
+ What is future object in java?
+ 
+ 
+ Save vs Persist in hibernate ?
+ 
+ 
+ 
+ 
+ What is the design of the microservices implemented in your current project?
+Ans. The microservices in our current project are designed using a combination of RESTful APIs
+
+Can you provide a program that prints the second largest number in both an array and a list, illustrating implementations using streams as well as traditional methods?
+
+list.distinct().sort((x,y)-> y-x).skip(1).findfirst();
+
+High level design of your project
+
+Java core concepts to advance architecture questions. They check if you have really worked or not.
+
+Coding question on finding the count of longest consecutive numbers in an array and optimize it using collection.
+
+Have you checked how the system in allocating memory in your project and how will troubleshoot in case of out of memory error in production environment?
+
+Write a task and then execute it using thread pool in java multithreading. How do you decide what should be the size of thread pool?
+
+Saga Design pattern in java microservices.
+
+How do we decide where should we use @Bean and where @Component annotation in java spring boot?
+
+why do we need locks in java multithreading?
+
+Which API gateway are you using in your project?
+
+Difference between @Spy and @Mock annotation.
+
+How do you handle security in your project?
+
+What is CompletableFuture in java ?
+
+A intermediate-level machine coding problem involving fetching data from an external API and displaying details of a selected entity: It allows users to select an entity from the response.
+ When the user selects an entity, it should populate and display its detailed information.
+ 
+Need to develop microservices with multiple APIs.
+
+
+Mixed questions of design patterns, spring, java, transaction management
+
+ A. In Technical Round : -
+ Core Java Basic Questions. - Type Casting. - Difference Between : String Vs StringBuffer Vs StringBuilder || Throw Vs Throws || ArrayList Vs LinkList. 
+ - Java 8 features explain. - Spring Annotation. - Spring Boot Global Exception Handling. 
+ - Thread Handling. - Angular : Data Binding Properties - Angular : What is Decorators/ Components/ Modules/ Roughing.
+ - Angular Life Cycle Hooks. B. In Manager Round : - Last Project Explanation. - What is Jira. - Agile Methodologies. -
+ Project related questions. - Programs : WAP to reverse string without effecting vowels position. - Linklist program, 
+ without using inbuilt functions.
+ 
+ 
+ 
+ 
+ 
+ 
+ UncaughtExceptionHandler
+ 
+ 
+ Java Runtime class is used to interact with java runtime environment. Java Runtime class provides methods to execute a process, 
+ 
+ invoke GC, get total and free memory etc. There is only one instance of java.lang.Runtime class is available for one java application.
+ 
+ 
+ Runtime.getRuntime().exec("notepad");//will open a new notepad  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
