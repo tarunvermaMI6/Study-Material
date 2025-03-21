@@ -1,4 +1,4 @@
-package com.example.paymentservice.api;
+package com.engineeringdigest.journalApp.api;
 
 public class UserNotFoundException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.example.paymentservice.exception;
+package com.engineeringdigest.journalApp.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

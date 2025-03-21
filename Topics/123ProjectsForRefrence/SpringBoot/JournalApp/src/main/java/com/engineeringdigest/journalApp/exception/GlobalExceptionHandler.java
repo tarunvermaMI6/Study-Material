@@ -1,11 +1,13 @@
-package com.example.paymentservice.exception;
+package com.engineeringdigest.journalApp.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.example.paymentservice.api.UserNotFoundException;
+import com.engineeringdigest.journalApp.api.UserNotFoundException;
+
+
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
