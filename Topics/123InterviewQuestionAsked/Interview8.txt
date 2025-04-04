@@ -1,0 +1,67 @@
+
+
+@FunctionalInterface
+interface MyInterface{
+
+
+void myfunctionOne();
+
+}
+
+
+class A implements MyInterface{
+
+
+void myfunctionOne(){
+
+syso("Hello");
+}
+
+}
+
+class B{
+
+MyInterface intf = new MyInterface({
+
+
+}); // anony class
+
+// or 
+
+
+MyInterface intf = ()-> {syso("Hello")};
+
+intf.myfunctionOne()
+
+
+}
+
+
+////////////////////////////////
+
+int [] arr = {5,4,9,10,12,16,16};
+
+  Arrays.stream(arr).boxed().sorted((x,y)->y-x).skip(1).mapToint(Integer::intValue).findFirst().map(x->syso(x));
+  
+  
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

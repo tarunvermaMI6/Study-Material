@@ -28,9 +28,14 @@ public class HelloWorldConfig {
 
 public static void main(String[] args) {
    
+   ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+    // or
+   
    ApplicationContext ctx = new AnnotationConfigApplicationContext(HelloWorldConfig.class);
    
-   // ye bc ApplicationContext kya karta hai? bean banata hai =
+   // ye bc ApplicationContext kya karta hai? interface hai ek and bean ki lifecycle manage karta hai
+   // same kaam BeanFactory bhi karta hai but aplication context advance features deta hai 
    
    HelloWorld helloWorld = ctx.getBean(HelloWorld.class);
    helloWorld.setMessage("Hello World!");
@@ -102,7 +107,11 @@ public class AppConfig {
 * it make setter getters by itself during compilation but hides it , u can't see
 
 //*********** optional ********
-* box ki tarah hota hai , usme object ho bhi sakta hai nahi bhi , null pointer exception ko handle karne k liye hota 
+* ek class hai,  box ki tarah hota hai , usme object ho bhi sakta hai nahi bhi , null pointer exception ko handle karne k liye hota 
+
+Optional<String> optional = Optional.of("Hello");
+Optional<String> optional = Optional.ofNullable(null);
+Optional<String> emptyOptional = Optional.empty();
 
 //********* jankari ************
 
@@ -124,7 +133,9 @@ Commits the transaction if successful, or rolls it back on failure.
 
 Avoid applying it to private methods (Spring proxies don’t intercept private methods).
 
+// jankari
 * microservice me kya hota hai sabka apna db hai bc waha purane zamane ka ACID transactions kaam nahi karega to hum kya kar sakte hai, 
+ 
  1) Local Transactions – Using @Transactional (for a single microservice).
  
  suppose order service hai and payment service hai , abb order and payment dono save tabhi honge jab sab theek hoga , but make sure kese karnege ki payment ho gaya
@@ -278,7 +289,7 @@ Secure API Gateway (api-gateway) to verify JWT tokens before forwarding requests
 Secure Microservices (user-service, order-service) to trust only valid JWT tokens.
 
 
-2) dusra har ke service token generate karegi and validate karegi (not recommenades) coz request ko serive pe user authenticate karna padega , increase latency and overhead
+2) dusra har baar service token generate karegi and validate karegi (not recommenades) coz request ko serive pe user authenticate karna padega , increase latency and overhead
 
 
 //******************** classpath *********************************
@@ -380,7 +391,7 @@ Use restTemplate , make a bean of it and use restTemplate.exchange() function
 
 * pahle to jitne bhi events ho rahe hai ex like,comments ,order and notifications kafka unhe collect karega and store karega temperoray than distribute karega among the services 
   to kafka ensure karega jo data travel ho wo smooth ho agar yahi cheej hum rest serivce se kare to direct communication hoga and turant hoga synchronous hoga to jab load badega
-  to laure lag jaynege, suppose mai kar 1 sec me 1 mil likes kar raha hu to kafka kya karega in request ko distribute kar dega , sacalbality and loose coupling achieve karte hai
+  to laure lag jaynege, suppose mai 1 sec me 1 mil likes kar raha hu to kafka kya karega in request ko distribute kar dega , sacalbality and loose coupling achieve karte hai
 
 * kafka cluster : group of kafka servers or brokers
 * kafka broker : kafka ka server,stores and distributes messages.
@@ -493,6 +504,16 @@ hello-lemon                        lemon
 bye - orange                       orange
 bye - mango                        mango
 
+// How Kafka Knows If a Message Is Read?
+Kafka does not track this directly—instead, it uses consumer offset tracking:
+
+✅ Consumer Group Offsets
+Each consumer reads messages and commits offsets to Kafka.
+
+Kafka stores the last committed offset in a special internal topic: __consumer_offsets.
+
+When a consumer restarts, it resumes reading from the last committed offset.
+
 * Ab baat karte hain // consumer offset and cosumer group ki
 
 * consumer kese consume kar raha hai message
@@ -550,11 +571,15 @@ message1 → message2 → message3
 2. If There Are Multiple Partitions
 Messages are distributed across partitions based on the producer's partitioning strategy (e.g., round-robin, key-based).
 Order is guaranteed within a single partition, but not across multiple partitions.
+
 📌 Example: 2 Partitions
 
 Partition	Messages
+
 Partition-0	message1, message3
+
 Partition-1	message2
+
 If there are two consumers in the same group, each will consume messages from different partitions.
 Consumer-1 might receive message1 → message3, while Consumer-2 gets message2 first.
 
@@ -563,6 +588,7 @@ Since message1 and message3 are in different partitions, they may be processed o
 ✅ Order is guaranteed per partition.
 
 3. What If a Consumer Fails?
+
 Kafka reassigns partitions to another available consumer.
 The new consumer picks up from the last committed offset.
 Example:
@@ -572,10 +598,10 @@ No message loss, but rebalancing may cause delays.
 
 Summary:
 
-Scenario	Order Guaranteed?	Explanation
-Single partition, single consumer	✅ Yes	Messages are consumed in the same order as produced.
-Multiple partitions, multiple consumers	❌ No	Order is only maintained per partition, but not globally.
-Partition reassignment (Consumer failure)	✅ Per partition	Another consumer picks up from the last committed offset.
+// Scenario	                                          Order Guaranteed?	         Explanation
+Single partition, single consumer	                  ✅ Yes	                 Messages are consumed in the same order as produced.
+Multiple partitions, multiple consumers	              ❌ No	                     Order is only maintained per partition, but not globally.
+Partition reassignment (Consumer failure)	          ✅ Per partition	         Another consumer picks up from the last committed offset.
 
 Final Answer:
 If there is one partition, message1 will be consumed first.
@@ -613,7 +639,8 @@ If there are multiple partitions, it depends on partitioning, and global order m
 
 Why is HTTPS Safe?
 
-HTTPS (HyperText Transfer Protocol Secure) is safer than HTTP because it uses encryption, authentication, and integrity mechanisms to protect data transmitted between a client (browser) and a server.
+HTTPS (HyperText Transfer Protocol Secure) is safer than HTTP because it uses encryption, authentication, and integrity mechanisms to protect data transmitted between a client 
+(browser) and a server.
 
 HTTPS Uses Encryption (Prevents Eavesdropping)
 HTTPS uses SSL/TLS (Secure Sockets Layer / Transport Layer Security) to encrypt data.
@@ -634,7 +661,7 @@ GET /login?username=admin&password=123456
 
 
 
-  
+// ***************  exception handling see project journalApp
 
 
 

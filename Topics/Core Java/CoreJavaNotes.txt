@@ -1,0 +1,457 @@
+
+// Generics in Java
+Generics in Java provide type safety and code reusability by allowing us to create classes, interfaces, and methods with type parameters. This enables developers to write generic
+code that works with different data types without type casting.
+
+1. Why Use Generics?
+
+✅ Type Safety – Avoid ClassCastException by specifying the data type at compile time.
+✅ Code Reusability – Write one class/method that works with different types.
+✅ Elimination of Type Casting – No need to manually cast objects.
+✅ Compile-Time Checking – Catch type-related errors at compile time.
+
+// Generic Box class
+public class Box<T> {
+    private T value;
+
+    public Box(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public static void main(String[] args) {
+        Box<Integer> intBox = new Box<>(100);
+        System.out.println("Integer Box: " + intBox.getValue());
+
+        Box<String> strBox = new Box<>("Hello Generics");
+        System.out.println("String Box: " + strBox.getValue());
+    }
+}
+
+// Bounded Type Parameters (extends)
+A generic type can be restricted to a specific class hierarchy.
+
+
+// Restrict T to be a subclass of Number
+public class Calculator<T extends Number> {
+    private T num;
+
+    public Calculator(T num) {
+        this.num = num;
+    }
+
+    public double square() {
+        return num.doubleValue() * num.doubleValue();
+    }
+
+    public static void main(String[] args) {
+        Calculator<Integer> intCalc = new Calculator<>(5);
+        System.out.println("Square of 5: " + intCalc.square());
+
+        Calculator<Double> doubleCalc = new Calculator<>(4.5);
+        System.out.println("Square of 4.5: " + doubleCalc.square());
+
+        // Calculator<String> strCalc = new Calculator<>("Test"); // ❌ Compile-time error
+    }
+}
+
+
+// int a = 10, where will a and 10 get stored
+ChatGPT said:
+When you declare and initialize:
+
+java
+Copy
+Edit
+int a = 10;
+both a and 10 are stored in Stack Memory because:
+
+a (variable name) → Stored in the stack frame of the method where it is declared.
+
+10 (value) → Since int is a primitive type, its value is directly stored in the stack along with a.
+
+Detailed Breakdown
+Let's assume this code is inside the main() method:
+
+java
+Copy
+Edit
+public class StackExample {
+    public static void main(String[] args) {
+        int a = 10; // Stored in stack memory
+    }
+}
+Memory Allocation
+markdown
+Copy
+Edit
+Stack Memory:
+-------------------
+| a = 10          |  ← Stored in main() method's stack frame
+-------------------
+✅ Since int is a primitive type, its value (10) is directly stored in the stack.
+✅ If a were an object reference instead, it would be in the stack, but the object itself would be in the heap.
+
+Would you like an example with objects (new Integer(10)) to see how heap memory is used? 🚀
+
+
+
+
+
+
+
+You said:
+// class AB{      int a = 10;       }, now where a and 10 get stored
+ChatGPT said:
+When you declare:
+
+java
+Copy
+Edit
+class AB {  
+    int a = 10;  
+}
+and then create an object:
+
+java
+Copy
+Edit
+AB obj = new AB();
+memory allocation happens as follows:
+
+Memory Breakdown
+Variable/Value	Memory Location	Explanation
+obj (Reference)	Stack Memory	obj is a reference variable, stored in the stack.
+a (Instance Variable)	Heap Memory	Since a is an instance variable, it is stored in the heap inside the AB object.
+10 (Value of a)	Heap Memory	The primitive value 10 is stored inside the AB object in the heap.
+Example Code
+java
+Copy
+Edit
+class AB {
+    int a = 10; // Instance variable (stored in Heap)
+}
+
+public class MemoryExample {
+    public static void main(String[] args) {
+        AB obj = new AB(); // 'obj' is a reference in Stack, actual object is in Heap
+    }
+}
+Memory Allocation
+1. Stack Memory (Method Execution)
+markdown
+Copy
+Edit
+Stack Memory:
+-------------------
+| obj → (ref to Heap) |  ← Reference to the object
+-------------------
+2. Heap Memory (Object Storage)
+markdown
+Copy
+Edit
+Heap Memory:
+---------------------
+| AB Object @1a2b   |
+|   a = 10          |
+---------------------
+Key Observations
+✔ obj (Reference Variable) is in the Stack.
+✔ Instance Variable (a) is part of the AB object, which is in the Heap.
+✔ Primitive value 10 is inside the object in the Heap.
+
+
+// Wrapper Classes
+
+In Java, wrapper classes encapsulate primitive data types into objects, allowing primitives to be treated as objects. Each primitive type has a corresponding wrapper class in the 
+java.lang package.
+
+// Autoboxing & Unboxing (Introduced in Java 5)
+
+Java automatically converts between primitives and wrapper classes:
+
+// Autoboxing (Primitive → Wrapper)
+Integer num = 100; // Equivalent to Integer.valueOf(100)
+
+// Unboxing (Wrapper → Primitive)
+
+int n = num; // Equivalent to num.intValue()
+
+// // Custom wrapper class for int
+public class MyInteger {
+    private int value; // Encapsulated primitive int
+
+    // Constructor
+    public MyInteger(int value) {
+        this.value = value;
+    }
+
+    // Getter
+    public int getValue() {
+        return value;
+    }
+
+    // Setter
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    // Additional method
+    public boolean isEven() {
+        return value % 2 == 0;
+    }
+
+    // Overriding toString() for better output
+    @Override
+    public String toString() {
+        return "MyInteger{" + "value=" + value + '}';
+    }
+
+    // Main method to test
+    public static void main(String[] args) {
+        MyInteger myInt = new MyInteger(10);
+        System.out.println(myInt); // Calls toString()
+
+        myInt.setValue(15);
+        System.out.println("Updated Value: " + myInt.getValue());
+        System.out.println("Is Even? " + myInt.isEven());
+    }
+}
+
+///////////////////////////////////////////////////////////////////
+
+public class StringPoolExample {
+    public static void main(String[] args) {
+        String str = new String("hello"); // Heap + Pool
+        String str1 = "hello";            // String Pool
+        String str2 = new String("hello"); // New Heap Object
+
+        System.out.println(str == str1);  // false (Different memory locations)
+        System.out.println(str.equals(str1)); // true (Same content)
+
+        System.out.println(str1 == "hello"); // true (Both in String Pool)
+        System.out.println(str == str2);  // false (Both are separate objects in Heap)
+    }
+}
+
+
+// How to Create an Immutable Class in Java?
+
+An immutable class is one whose state (fields) cannot be changed after it is created.
+
+✅ Examples of immutable classes in Java: String, Integer, BigDecimal.
+✅ Use Case: Helps in thread safety, avoids unexpected modifications, and ensures predictability.
+
+1. Rules for Creating an Immutable Class
+To make a class immutable, follow these principles:
+
+Declare the class as final (so it cannot be subclassed).
+
+Make all fields private and final (to prevent modification after initialization).
+
+Do not provide setters or any methods that modify fields.
+
+Initialize fields via a constructor.
+
+Return deep copies of mutable objects (if the class contains references to mutable objects).
+
+2. Example of an Immutable Class
+java
+Copy
+Edit
+// Immutable class
+public final class ImmutablePerson {
+    private final String name; // Final field (cannot be modified)
+    private final int age;     // Final field (cannot be modified)
+
+    // Constructor to initialize values
+    public ImmutablePerson(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getter methods (no setters)
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    // Main method to test
+    public static void main(String[] args) {
+        ImmutablePerson person = new ImmutablePerson("Alice", 25);
+        System.out.println(person.getName()); // Alice
+        System.out.println(person.getAge());  // 25
+    }
+}
+Why is this class immutable?
+✔ final class → Prevents subclassing.
+✔ private final fields → Prevents modification.
+✔ No setters → No way to change fields.
+
+
+// above we are using primitive data type which can be made constant but an object cant be constant coz we can stil chnage its value
+
+
+Example:
+
+public final class MutableIssue {
+    private final List<String> list;
+
+    public MutableIssue(List<String> list) {
+        this.list = list; // ❌ Wrong: Direct reference assignment
+    }
+
+    public List<String> getList() {
+        return list; // ❌ Wrong: Allows modification
+    }
+}
+
+List<String> names = new ArrayList<>();
+names.add("Alice");
+MutableIssue obj = new MutableIssue(names);
+
+// Modifying the list from outside
+names.add("Bob"); // Modifies obj's internal list ❌
+
+//  ConcurrentHashMap and CopyOnWriteArrayList
+
+ConcurrentHashMap & CopyOnWriteArrayList in Java (Thread-Safe Collections)
+Both ConcurrentHashMap and CopyOnWriteArrayList are thread-safe collections from java.util.concurrent package, designed for multi-threaded environments.
+
+1. ConcurrentHashMap (Thread-Safe HashMap)
+A thread-safe alternative to HashMap, allowing multiple threads to read and write efficiently without blocking the entire map.
+
+✅ Key Features
+No explicit synchronization required.
+
+Uses segment-based locking (since Java 8, uses a finer-grained locking mechanism) for high performance.
+
+Supports concurrent reads & writes.
+
+Doesn’t allow null keys or values (HashMap allows one null key and multiple null values).
+
+📝 Example: ConcurrentHashMap Usage
+java
+Copy
+Edit
+import java.util.concurrent.*;
+
+public class ConcurrentHashMapExample {
+    public static void main(String[] args) {
+        ConcurrentHashMap<Integer, String> map = new ConcurrentHashMap<>();
+
+        // Adding elements
+        map.put(1, "Alice");
+        map.put(2, "Bob");
+
+        // Retrieving elements
+        System.out.println("Value at key 1: " + map.get(1));
+
+        // Removing elements
+        map.remove(2);
+
+        // Iterating safely
+        map.forEach((key, value) -> System.out.println(key + ": " + value));
+    }
+}
+✔ Multiple threads can read/write concurrently without issues.
+✔ Internally locks only specific parts of the map (not the whole map).
+
+2. CopyOnWriteArrayList (Thread-Safe ArrayList)
+A thread-safe alternative to ArrayList, designed for scenarios where reads are frequent and writes are rare.
+
+✅ Key Features
+Optimized for high read operations.
+
+Writes create a new copy of the array, ensuring thread safety.
+
+Iterators don’t throw ConcurrentModificationException (unlike ArrayList).
+
+📝 Example: CopyOnWriteArrayList Usage
+java
+Copy
+Edit
+import java.util.concurrent.*;
+
+public class CopyOnWriteArrayListExample {
+    public static void main(String[] args) {
+        CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
+
+        // Adding elements
+        list.add("Alice");
+        list.add("Bob");
+
+        // Iterating safely (no ConcurrentModificationException)
+        for (String name : list) {
+            System.out.println(name);
+        }
+
+        // Modifying list
+        list.add("Charlie");
+        System.out.println("Updated List: " + list);
+    }
+}
+✔ Each modification creates a new copy, ensuring thread safety.
+✔ Best for "read-heavy, write-light" scenarios (e.g., caching, event logs).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

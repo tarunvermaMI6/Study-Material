@@ -34,8 +34,8 @@ public class WordsCount {
 
 		// now if we want to sort it
 
-		map =  map.entrySet().stream().sorted(Map.Entry.comparingByValue());
-				.collect(Collectors.toList());
+		//map =  map.entrySet().stream().sorted(Map.Entry.comparingByValue());
+			//	.collect(Collectors.toList());
 
 		System.out.println(map);
 	}

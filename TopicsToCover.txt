@@ -1,4 +1,34 @@
 
 ****************************** Toooopics **********************
 
-* Spring Boot 
+// Topic                             Status                   Revision
+
+* Spring Boot                        Done
+
+* Spring                             Done
+
+* Microservices                      Done 
+
+* Kafka                              Done
+
+* Java Design Pattern                Done
+
+* Core Java                          Done
+
+* Java 8                             Done
+
+* Stream API                         Pending
+
+* Collections                        Pending
+
+* Multithreading                     Pending
+
+* Docker                             Pending
+
+* Kubernetics                        Pending
+
+* CI/CD Pipeline                     Pending
+
+* AWS                                Pending 
+
+* System Design                      Pending

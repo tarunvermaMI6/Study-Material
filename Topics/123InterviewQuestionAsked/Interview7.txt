@@ -1,0 +1,57 @@
+
+Q)What will be the output of the below codes?
+
+public class A {
+
+public void m1(String str) {
+
+System.out.println("String method called");
+
+}
+
+public void m1(Object obj) {
+
+System.out.println("object method called");
+
+}
+
+   public static void main(String args[]){
+
+   A obj=new A();
+
+   obj.m1(null);
+
+ }
+}
+
+
+Ans: 
+
+Explanation:
+The class A has two overloaded methods m1:
+
+One accepts a String (m1(String str))
+
+One accepts an Object (m1(Object obj))
+
+In main, the method m1(null) is called. Since null can be assigned to both String and Object, Java needs to determine which method to invoke.
+
+Method Selection Rule in Overloading:
+
+When there are overloaded methods and the argument is null, Java will choose the most specific method (i.e., the method with the more derived type).
+
+Here, String is a subclass of Object, making m1(String str) more specific than m1(Object obj).
+
+Hence, m1(String str) is invoked.
+
+Key Takeaway:
+In method overloading, when multiple methods can accept null, the method with the more specific parameter type is chosen.
+
+Let me know if you need further clarification! 😊
+
+
+
+
+
+
+

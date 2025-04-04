@@ -1,0 +1,250 @@
+For a Java developer with 5 years of experience, the interview questions typically focus on core Java concepts, 
+cadvanced features, best practices, system design, and problem-solving skills. Below is a categorized list of questions:
+
+Core Java & OOPs Concepts
+
+Explain the principles of OOP (Inheritance, Encapsulation, Polymorphism, Abstraction) with examples.
+What is the difference between method overloading and method overriding?
+Can we override a static method in Java? Why or why not?
+What happens when an exception is thrown in a finally block?
+Explain equals() and hashCode() contract.
+Why is String immutable in Java?
+What are wrapper classes, and why do we need them?
+
+Collections Framework
+
+What is the difference between HashMap, LinkedHashMap, and TreeMap?
+How does HashMap work internally? Explain the role of hashing and collision resolution.
+Why is ConcurrentHashMap faster than synchronized HashMap?
+What is the difference between fail-fast and fail-safe iterators?
+How can we sort a list of objects using Comparator and Comparable?
+
+Java 8+ Features
+
+Explain Lambda Expressions and give an example.
+How does Stream API work? How does it improve performance?
+What is the difference between map() and flatMap() in streams?
+Explain Functional Interfaces in Java 8. Name a few.
+How does Optional work, and how to handle null values using Optional?
+What are the major improvements in Garbage Collection after Java 8?
+
+Concurrency & Multithreading
+
+What is the difference between Thread and Runnable?
+Explain synchronized, volatile, and Lock in Java.
+What are Callable and Future in Java?
+How does ThreadPoolExecutor work internally?
+Explain ReentrantLock vs synchronized block.
+What is CompletableFuture, and how is it different from Future?
+What are CountDownLatch, CyclicBarrier, and Semaphore?
+
+Exception Handling & Best Practices
+
+What is the difference between checked and unchecked exceptions?
+Can we create a custom exception in Java? How?
+What is try-with-resources, and how does it help in exception handling?
+What is LazyInitializationException in Hibernate?
+
+JVM, Memory Management & Performance Optimization
+
+Explain JVM Architecture and how it works.
+What are Heap and Stack memory in Java?
+What are different types of Garbage Collectors in Java?
+How does Garbage Collection work internally?
+What are memory leaks in Java, and how to prevent them?
+What are soft, weak, and phantom references in Java?
+How can we optimize the performance of a Java application?
+
+Explain Singleton Pattern. How can we make it thread-safe?
+What is the difference between Factory and Abstract Factory patterns?
+Explain Builder Pattern with an example.
+When should we use Proxy Pattern?
+How does the Observer Pattern work?
+
+Java Design Patterns
+
+Explain Singleton Pattern. How can we make it thread-safe?
+What is the difference between Factory and Abstract Factory patterns?
+Explain Builder Pattern with an example.
+When should we use Proxy Pattern?
+How does the Observer Pattern work?
+
+
+Spring Boot & Microservices
+
+Explain Spring Boot AutoConfiguration.
+How does Spring Boot manage dependency injection?
+What is the difference between @Component, @Service, and @Repository?
+What are RESTful APIs, and how to create one using Spring Boot?
+How to implement caching in Spring Boot?
+Explain Circuit Breaker Pattern in Microservices.
+What are Feign Clients, and how do they help in Microservices?
+
+Database & ORM (Hibernate)
+
+How does Hibernate manage transactions?
+What is the difference between Lazy and Eager loading?
+What are Named Queries in Hibernate?
+What is the N+1 Select problem, and how to solve it?
+How does connection pooling work in Hibernate?
+
+System Design & Architecture
+
+How would you design a URL shortener like bit.ly?
+How does API Gateway work in a microservices architecture?
+How do you handle data consistency in distributed systems?
+How would you scale a Java-based web application?
+Explain event-driven architecture with an example.
+
+Coding Questions (Problem Solving)
+
+Find the second-highest element in an array.
+Reverse a linked list using iteration and recursion.
+Find the longest substring without repeating characters.
+Implement a LRU Cache using Java.
+Find the maximum occurring character in a string.
+Find the first non-repeating character in a string.
+
+
+Arrays & Strings
+
+Find the second-highest number in an array.
+Find the missing number in an array of size n-1 containing numbers from 1 to n.
+Rotate an array by k positions.
+Find the longest substring without repeating characters.
+Check if two strings are anagrams of each other.
+Reverse a string without using extra space.
+Implement string compression (e.g., "aabbbcc" → "a2b3c2").
+Find the first non-repeating character in a string.
+Check if a string is a valid palindrome.
+Convert a Roman numeral to an integer.
+Find the longest substring without repeating characters.
+Check if two strings are anagrams.
+Find the second-highest number in an array.
+Find the missing number in an array containing numbers from 1 to n.
+Find duplicate elements in an array.
+Reverse a string without using extra space.
+Find the first non-repeating character in a string.
+Find the longest substring without repeating characters.
+Check if two strings are anagrams.
+Merge two sorted arrays without extra space.
+Rotate an array by K positions.
+
+Linked List
+
+Reverse a linked list (iterative & recursive).
+Find the middle node of a linked list.
+Detect a cycle in a linked list using Floyd’s cycle detection algorithm.
+Merge two sorted linked lists.
+Find the nth node from the end of a linked list.
+Remove duplicates from a sorted and unsorted linked list.
+Add two numbers represented by linked lists.
+Check if a linked list is palindromic.
+
+Stack & Queue
+
+Implement a stack using an array or linked list.
+Implement a queue using a stack.
+Implement Min Stack (get min element in O(1)).
+Implement LRU Cache using LinkedHashMap.
+Implement a circular queue.
+Find the next greater element for each element in an array.
+Evaluate a postfix expression.
+
+Hashing & Maps
+
+Find the first repeating character in a string.
+Find the most frequent element in an array.
+Find two numbers that add up to a target (Two Sum Problem).
+Implement a custom HashMap from scratch.
+Find the longest consecutive subsequence in an array.
+Find the first non-repeating element in an array.
+
+Recursion & Backtracking
+
+Generate all permutations of a string.
+Solve the N-Queens problem.
+Implement Sudoku solver.
+Find the power of a number using recursion.
+Implement word break problem.
+Find all subsets (power set) of a given set.
+
+Sorting & Searching
+
+Implement Bubble Sort, Selection Sort, Merge Sort, and QuickSort.
+Find the Kth largest element in an array.
+Implement binary search (recursive & iterative).
+Find the intersection of two sorted arrays.
+Find the median of two sorted arrays.
+Find the majority element (Boyer-Moore Voting Algorithm).
+Search in a rotated sorted array.
+
+Graphs & Trees
+
+Implement DFS and BFS for a graph.
+Find the lowest common ancestor in a binary tree.
+Check if a binary tree is balanced.
+Find the diameter of a binary tree.
+Convert a binary tree to a doubly linked list.
+Find the shortest path in an unweighted graph (BFS).
+Implement Dijkstra’s Algorithm for shortest path.
+Check if a graph is a tree.
+
+Java 8 & Functional Programming
+
+Use Stream API to filter even numbers from a list.
+Use Stream API to find the second-highest number in a list.
+Sort a list of objects using Comparator and Lambda.
+Implement parallel streams for performance improvement.
+Use Optional to handle null values.
+Use map() and flatMap() in Java Streams.
+
+Concurrency & Multithreading
+
+Implement a thread-safe Singleton class.
+Implement Producer-Consumer using wait-notify.
+Implement Reader-Writer problem.
+Implement ThreadPoolExecutor manually.
+Solve Dining Philosophers Problem.
+Implement Callable and Future in Java.
+Implement Deadlock detection & prevention.
+
+🔟 System Design & Architecture
+Design a URL shortener like Bit.ly.
+Design a rate limiter for an API.
+Design a cache system using LRU.
+Design a distributed file storage system.
+Design a notification service.
+Design a messaging queue system.
+
+🔥 Bonus: Tricky Logical Questions
+Swap two variables without using a third variable.
+Reverse an integer without converting it to a string.
+Implement FizzBuzz in the most optimized way.
+Find whether a number is prime or not.
+Find the GCD and LCM of two numbers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

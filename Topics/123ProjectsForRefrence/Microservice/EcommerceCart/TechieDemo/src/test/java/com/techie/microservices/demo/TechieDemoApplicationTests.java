@@ -1,0 +1,14 @@
+package com.techie.microservices.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+
+@SpringBootTest
+class TechieDemoApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

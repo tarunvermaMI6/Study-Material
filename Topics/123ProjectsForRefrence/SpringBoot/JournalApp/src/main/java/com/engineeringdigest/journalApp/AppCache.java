@@ -1,7 +1,10 @@
 package com.engineeringdigest.journalApp;
 
+import org.springframework.stereotype.Component;
+
 import jakarta.annotation.PostConstruct;
 
+@Component
 public class AppCache {
 
 	@PostConstruct

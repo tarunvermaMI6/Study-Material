@@ -1,0 +1,42 @@
+Oops
+
+* class - a data type, template, have properties & func (set of rules u can say) (logically available)
+* object - instance of a class (provide data you can say) (physcially available in memory)
+* Student st; // st is a ref var and pointing to nothing
+* constructor
+* stack -- primitive data , method call, local var, refrences
+* heap - objects and there instance variable 
+* final must be intitalized when var declaration of in constructor
+* Lazy Initialization
+* java is pass by value
+* read memory leak in java chat gpt
+* only inner class can be static
+* objects get created during runtime, same time there memory get allocated but static method, variable,class have nothing to do with objects so they got 
+  resolved during compile time.
+* inner class , local inner class, anononymous class  
+* you can inherit static methods but cant override it coz static belongs to class and overriding done with the help of objects.
+* cant create object of an abstract class , have to declare class abstract if any method is abstract
+* The @Transactional annotation in Spring Framework is used to manage database transactions automatically. It ensures that a method (or an entire class) executes within a database transaction, handling commit, rollback, and propagation.
+  🔹 What Does @Transactional Do?
+  Starts a Transaction – Before the method executes.
+  Commits the Transaction – If the method completes successfully.
+  Rolls Back the Transaction – If an exception occurs (by default, only for unchecked exceptions). 
+  
+  without @Transactional
+  public void saveStudent(Student student) {
+    Session session = sessionFactory.openSession();
+    Transaction tx = null;
+    try {
+        tx = session.beginTransaction();  // Start transaction
+        session.save(student);           // Save student
+        tx.commit();                      // Commit transaction
+    } catch (Exception e) {
+        if (tx != null) tx.rollback();    // Rollback in case of error
+    } finally {
+        session.close();
+    }
+}
+
+* dont use interfaces casually in performane driven apps
+* failed passed fail saved
+* cloneable , shallow and deep cloning

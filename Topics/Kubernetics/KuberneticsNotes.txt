@@ -1,0 +1,328 @@
+
+// Steps to deploy in WB
+
+1) go to git VM 
+2) create docker file and make application build
+3) create docker image 
+4) upload that docker image into Google Cloud Artifact Registry or Amazon Elastic Container Registry (ECR) (they are like dockerhub)
+
+   docker tag my-app us-central1-docker.pkg.dev/my-project/my-repo/my-app:v1
+   docker push us-central1-docker.pkg.dev/my-project/my-repo/my-app:v1
+
+5) create yaml file for a docker image ... every unique docker image will have their own yaml file 
+
+//////////////////////////////
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-app
+          image: us-central1-docker.pkg.dev/my-project/my-repo/my-app:v1
+          ports:
+            - containerPort: 8080
+
+//////////////////////////
+
+6) kubectl apply -f deployment.yaml
+ 
+* configuration management
+* you can not change cofiguartion of a container during runtime
+
+* Orchestators : Help in deploying and managing containers dynamically
+  - deploy
+  - zero downtown
+  - scale
+  - self heal when one container go down
+  
+// Can You Run an App in Kubernetes Without a Docker Image?
+
+ No, but you can use other container runtimes like:
+
+ containerd (used by default in Kubernetes)
+ CRI-O (lightweight alternative)
+ Podman (Docker alternative)
+
+Even if you use containerd or CRI-O, you still need to create a container image (not necessarily a Docker image, but an OCI-compliant image).  
+  
+  
+// Cluster  (control plane(master node) + nodes)
+  
+     master node
+     _____ 
+	|     |      ---------------- >           Node 1         (Worker Node) (Node we can say a VM)
+	|_____|                                   Node 2
+    
+
+//What is a Kubernetes Cluster?
+
+A Kubernetes Cluster is a group of nodes (machines) that work together to run containerized applications efficiently. It consists of a Control Plane (Master Node) that manages the 
+system and multiple Worker Nodes that run applications.
+
+Kubernetes Cluster Architecture
+A Kubernetes cluster has two main components:
+
+//Control Plane (Master Node)
+
+The brain of the Kubernetes cluster. It manages and schedules workloads.
+
+Component	Function
+
+API Server                   (kube-apiserver)	               Entry point for all Kubernetes commands (kubectl, API calls).
+Scheduler                    (kube-scheduler)	               Assigns Pods to the best worker node based on resources.
+Controller Manager           (kube-controller-manager)	       Ensures the desired state (e.g., restarts failed Pods).
+etcd                         (Key-Value Store)	               Stores all cluster configurations & states.
+
+//Worker Nodes (Where Applications Run)
+
+Each Worker Node runs application workloads inside Pods.
+
+Component	                      Function
+
+Kubelet	                          Communicates with the Control Plane and ensures containers run.
+Container Runtime	              Runs the containers (Docker, containerd, CRI-O).
+Kube Proxy	                      Manages network communication between Pods and external clients.
+
+//How Kubernetes Cluster Works
+
+1 Developers deploy applications in the form of Docker images.
+2 The Control Plane schedules the application onto Worker Nodes.
+3 Pods (smallest deployable units) run inside Worker Nodes.
+4 Kubernetes monitors, scales, and restarts applications automatically.
+5 Services and Ingress expose applications externally.
+
+//Deploying a Kubernetes Cluster
+
+Install Minikube (For Local Testing)
+
+minikube start
+
+Create a Deployment
+
+kubectl create deployment my-app --image=mydockerhubuser/my-app:v1
+
+Expose the App
+
+kubectl expose deployment my-app --type=LoadBalancer --port=80 --target-port=8080
+
+//Check Cluster Nodes
+
+ kubectl get nodes
+ Kubernetes           Cluster Types
+ Local Clusters       Minikube, Kind (for local testing).
+ Cloud Clusters       AWS EKS, Azure AKS, Google GKE.
+ On-Premises Clusters Self-hosted Kubernetes, OpenShift.
+
+ //Conclusion
+ 
+ A Kubernetes Cluster is a group of nodes that run containerized applications.
+ It consists of Control Plane (Master Node) & Worker Nodes.
+ Kubernetes automates deployment, scaling, and management of applications.
+  
+  
+// Node: A Node in Kubernetes is a physical or virtual machine that runs your containerized applications. It is part of the Kubernetes cluster and can be a Control Plane Node 
+     (Master Node) or a Worker Node.  
+  
+
+//Types of Nodes in Kubernetes
+
+//1 Control Plane Node (Master Node)
+
+Manages the Kubernetes cluster and schedules workloads.
+
+Does not run application containers (except system components).
+
+Contains essential components:
+
+API Server (Handles requests)
+
+Scheduler  (Assigns Pods to Nodes)
+
+Controller Manager  (Manages cluster state)
+
+etcd (Stores cluster data)
+
+// Worker Node (Runs Applications)
+
+The actual machine where containers run.
+
+Each Worker Node contains:
+
+Kubelet (Communicates with the Master)
+
+Container Runtime (Docker, containerd, CRI-O)
+
+Kube Proxy  (Manages networking)
+
+Pods (Group of running containers)
+
+How Nodes Work in Kubernetes
+
+1  You deploy an application (via kubectl or a YAML manifest).
+2  The Control Plane selects a Node to run the application.
+3  The Worker Node runs the Pod (which contains the application container).
+4  Kubernetes monitors the Node to ensure it is healthy.
+5  If a Node fails, Kubernetes reschedules Pods on another Node.
+
+Checking Nodes in a Kubernetes Cluster
+
+View All Nodes in the Cluster
+
+kubectl get nodes
+View Detailed Information About a Node
+
+kubectl describe node <node-name>
+Check Node Health
+
+kubectl get nodes -o wide
+Node Scaling in Kubernetes
+
+Add a New Node to the Cluster
+
+kubectl scale --replicas=3 deployment/my-app
+This increases the number of Nodes running your application.
+
+Auto-Scaling Nodes (Cloud Kubernetes)
+
+AWS EKS: Uses Cluster Autoscaler
+
+Google GKE: Supports Auto Node Provisioning
+
+Azure AKS: Uses Virtual Node scaling
+
+Summary
+
+ A Node is a physical/virtual machine that runs containers inside Kubernetes.
+ There are two types: Control Plane Node (manages cluster) & Worker Node (runs applications).
+ Kubernetes schedules Pods on Worker Nodes and automatically manages scaling & failures.  
+  
+  
+// kubectl: kubectl is the command-line tool for Kubernetes that allows you to manage and interact with your Kubernetes cluster. It helps you deploy applications, inspect 
+   resources, scale workloads, and troubleshoot issues.
+
+// Command	Description
+
+kubectl get nodes	Lists all nodes in the cluster.
+kubectl get pods	Lists all running Pods.
+kubectl get services	Shows active Services (LoadBalancer, ClusterIP, NodePort).
+kubectl create deployment my-app --image=my-image	Deploys an application.
+kubectl expose deployment my-app --type=LoadBalancer --port=80	Exposes a Deployment as a Service.
+kubectl scale deployment my-app --replicas=3	Scales the application to 3 replicas.
+kubectl logs my-app-pod	Fetches logs of a Pod.
+kubectl delete pod my-app-pod	Deletes a Pod.
+kubectl apply -f deployment.yaml	Deploys resources from a YAML file.  
+  
+
+// What is a Pod in Kubernetes?
+
+A Pod is the smallest deployable unit in Kubernetes. It is a wrapper around one or more containers that share networking, storage, and configuration.
+
+Key Features of a Pod
+
+Encapsulates one or more containers (e.g., Docker containers).
+Shares the same IP address across all containers inside it.
+Uses shared storage (Volumes) between containers.
+Managed by Kubernetes, which can restart or reschedule it.
+
+Types of Pods
+
+1
+
+Single-Container Pod (Most Common)
+Runs one application inside a single container.
+
+Example: Running a Spring Boot microservice in a container.
+
+//yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+spec:
+  containers:
+    - name: my-container
+      image: mydockerhubuser/my-app:v1
+      ports:
+        - containerPort: 8080
+
+2  Multi-Container Pod
+
+Runs multiple containers inside a single Pod.
+
+Containers share network & storage and can communicate using localhost.
+
+Example: Running Nginx as a reverse proxy alongside a Spring Boot container.
+
+//yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-multi-container-app
+spec:
+  containers:
+    - name: backend
+      image: mydockerhubuser/my-backend:v1
+      ports:
+        - containerPort: 8080
+    - name: proxy
+      image: nginx
+      ports:
+        - containerPort: 80
+
+How Pods Work in Kubernetes
+You create a Pod (via kubectl apply -f pod.yaml).
+Kubernetes schedules the Pod on a Worker Node.
+The Pod runs the containerized application.
+If a Pod fails, Kubernetes can restart or reschedule it.
+Pods are temporary (they don't survive Node failures unless managed by a Deployment).
+
+
+kubectl get pods
+Get Detailed Pod Info
+
+kubectl describe pod my-app
+View Pod Logs
+
+kubectl logs my-app
+ Delete a Pod
+
+kubectl delete pod my-app
+Difference Between a Pod and a Container
+
+Feature	Pod	Container
+Managed By	Kubernetes	Docker, containerd, etc.
+Networking	Has its own IP	Shares Node's IP
+Storage	Uses Kubernetes Volumes	Uses local storage
+Scaling	Scales using Deployments	Needs manual scaling
+
+Conclusion
+
+Pods are the smallest deployable unit in Kubernetes.
+A Pod can run one or more containers that share the same network & storage.
+Pods should be managed using Deployments for auto-restarts & scaling.  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

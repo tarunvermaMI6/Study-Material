@@ -1,0 +1,90 @@
+
+// for better view use notepad++ , dark theam and JS as language
+
+
+
+// Java Design Patterns
+
+   Design patterns are reusable solutions to common software design problems. They help improve code structure, maintainability, and flexibility.
+
+ //Types of Java Design Patterns
+
+  Design patterns are categorized into three main types:
+
+1 Creational Patterns – Object creation mechanisms.
+2️ Structural Patterns – Class & object composition.
+3️ Behavioral Patterns – Communication between objects.
+
+1// Creational Design Patterns (Object Creation)
+
+// Pattern	           Usage	                                                                    Example
+
+Singleton	       Ensures only one instance of a class exists	                                    Database connection pool
+Factory Method	   Creates objects without exposing the instantiation logic	                        LoggerFactory.getLogger()
+Abstract Factory   Creates families of related objects	                                            UI frameworks for different OS
+Builder	           Step-by-step object creation	                                                    StringBuilder, Lombok @Builder
+Prototype	       Creates clones of existing objects	                                            Copying an object without modifying the original
+
+
+2 // Structural Design Patterns (Class & Object Composition)
+
+// Pattern	              Usage	                                            Example
+Adapter	           Converts interface of a class into another	        InputStreamReader (Adapts InputStream to Reader)
+Decorator	       Adds behavior to objects dynamically	                BufferedReader decorating FileReader
+Proxy	           Controls access to an object	                        Spring AOP, Hibernate Lazy Loading
+Facade	           Simplifies complex APIs	                            JPA EntityManager
+Composite	       Treats objects & groups uniformly	                File system directories
+Flyweight	       Reduces memory usage by reusing objects	            Java Integer.valueOf(), String Pool
+
+3️ // Behavioral Design Patterns (Object Communication)
+
+//Pattern	                 Usage	                                             Example
+
+Observer	             Notifies multiple objects when state changes	        java.util.Observer
+Strategy	             Selects behavior dynamically at runtime	            Comparator
+Command	                 Encapsulates requests as objects	                    Undo functionality in editors
+Chain of Responsibility	 Passes requests through handlers	Servlet Filters,    Logging framework
+Template Method	         Defines a skeleton and lets subclasses modify behavior	AbstractList, Spring JdbcTemplate
+Mediator	             Reduces direct dependencies between classes	        Chat applications
+State	                 Changes behavior based on object state	                TCP connection states
+
+
+// Conclusion
+
+// Category	  Purpose
+Creational    Patterns	Object creation
+Structural    Patterns	Organizing classes & objects
+Behavioral    Patterns	Communication between objects
+
+
+// spring uses many design patterns, remembering all of them is not possible just name a few like :
+// check practice project 
+
+1) Singleton Pattern  (learn implementation) // ek baar he banao and use karo, jdbc connection ek baar he banana hota hai
+2) Factory Pattern    (learn implementation) // ek class hai Shape uski subclasses hai A, B, C ab hume agar subclasses ek object banane hai based on input hum use karenge factory pattern
+3) Builder Pattern                           // use for object creation helpful if you have lots of paramter,removes boilerplatecode 
+4) Proxy Pattern                             // spring kya karta hai proxy create kar deta hai before method execution like transaction open kar dena and method execute hone k baad
+                                             // apne aap transaction close kar deta hai
+5) Prototype Pattern                         // The Prototype Pattern is a creational design pattern that allows creating object copies (clones) instead of instantiating them from scratch. 
+                                             // It improves performance when object creation is expensive.
+                                            // in spring @Scope("prototype") spring creates a new instance of object for every request
+											// JDBCTemplate and RestTemplate
+6) Template Pattern                          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

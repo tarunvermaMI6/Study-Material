@@ -1,0 +1,986 @@
+
+* Spring Boot is an open source Java-based framework used to create a micro Service.
+
+* Micro Service is an architecture that allows the developers to develop and deploy services independently. Each service running has its own process and this 
+  achieves the lightweight model to support business applications.
+
+* Spring Boot Starters
+  Handling dependency management is a difficult task for big projects. Spring Boot resolves this problem by providing a set of dependencies for developers convenience.
+
+  For example, if you want to use Spring and JPA for database access, it is sufficient if you include spring-boot-starter-data-jpa dependency in your project.
+
+  Note that all Spring Boot starters follow the same naming pattern spring-boot-starter- *, where * indicates that it is a type of the application.
+
+* Auto Configuration
+  Spring Boot Auto Configuration automatically configures your Spring application based on the JAR dependencies you added in the project. For example, 
+  if MySQL database is on your class path, but you have not configured any database connection, then Spring Boot auto configures an in-memory database.
+
+  For this purpose, you need to add @EnableAutoConfiguration annotation or @SpringBootApplication annotation to your main class file. Then, your Spring Boot application 
+  will be automatically configured.
+  
+* How AutoConfiguration works?
+  It automatically loads the beans based on the classpath, but we need to use @EnableAutoConfiguration    
+
+* @SpringBootApplication
+  
+  The entry point of the Spring Boot Application is the class contains @SpringBootApplication annotation. This class should have the main method to run the Spring Boot application. 
+  @SpringBootApplication annotation includes Auto- Configuration, Component Scan, and Spring Boot Configuration.
+
+  If you added @SpringBootApplication annotation to the class, you do not need to add the @EnableAutoConfiguration, @ComponentScan and @SpringBootConfiguration annotation. The @SpringBootApplication annotation includes all other annotations.
+
+* @ComponentScan
+  Spring Boot application scans all the beans and package declarations when the application initializes. You need to add the @Component annotation for your class file 
+  to scan your components added in your project.
+
+* Dependency Injection Design Pattern
+* Loose coupling & Tight Coupling
+* Spring Container -- which create object and than inject in our class 
+* The moment we start a spring app all objects which have component scan are created in spring container but if we follow @Scope("prototype") the object will create when we ask for 
+  it.
+* spring follow singleton pattern
+* @Autowired use to search the object in spring container for DI, it search the object by type.
+* TO search the object by name use @Qualifier and we need to give name in @Component("obj1")
+* Imp https://www.experts-exchange.com/articles/4983/Bind-Variables-in-Oracle-and-Java.html#:~:text=Bind%20variables%20should%20be%20used,to%20be%20executed%20multiple%20times.
+
+* @Component("serviceA")
+public class ServiceA implements MyService { }
+
+@Component("serviceB")
+public class ServiceB implements MyService { }
+
+@Service
+public class MyConsumer {
+
+    @Autowired
+    @Qualifier("serviceA")  // Specifies the exact bean
+    private MyService myService;
+}
+
+* If one bean should be the default choice, use @Primary instead of @Qualifier:
+
+
+// **************************************** More *************************
+
+// Feign Client
+
+* Feign Client is a tool in Spring Boot that makes calling APIs easy by letting you define an interface instead of writing manual HTTP requests. It handles everything,
+ like sending requests and converting responses automatically.
+
+/////////////
+
+/actuator/metrics
+/actuator/health
+/actuator/loggers
+
+
+Spring Boot Actuator Endpoints & Their Results
+
+Spring Boot Actuator provides built-in endpoints to monitor and manage applications.
+
+1 /actuator/metrics (Application Metrics)
+
+🔹 This endpoint provides various system and application metrics like CPU usage, memory, threads, HTTP requests, and DB stats.
+
+Example Request
+
+GET http://localhost:8080/actuator/metrics
+Example Response
+
+{
+  "names": [
+    "jvm.memory.used",
+    "jvm.memory.max",
+    "system.cpu.usage",
+    "process.cpu.usage",
+    "http.server.requests",
+    "logback.events",
+    "tomcat.threads.config.max",
+    "hibernate.statistics.query",
+    "datasource.connections.active"
+  ]
+}
+✔ Each metric can be accessed individually:
+
+GET http://localhost:8080/actuator/metrics/system.cpu.usage
+🔹 Example Response for system.cpu.usage
+
+{
+  "name": "system.cpu.usage",
+  "measurements": [
+    { "statistic": "VALUE", "value": 0.15 }
+  ]
+}
+🔹 Key Metrics:
+
+Metric Name	Description
+
+system.cpu.usage	             System-wide CPU usage
+process.cpu.usage	             CPU usage of the application process
+jvm.memory.used	                 JVM memory currently in use
+http.server.requests	         Number of HTTP requests received
+datasource.connections.active	 Active database connections
+
+2️/actuator/health (Application Health Status)
+
+🔹 This endpoint provides application health status, including DB connection, disk space, and external services.
+
+Example Request
+
+GET http://localhost:8080/actuator/health
+Example Response (Healthy App)
+
+{
+  "status": "UP",
+  "components": {
+    "db": { "status": "UP", "details": { "database": "PostgreSQL", "result": 1 } },
+    "diskSpace": { "status": "UP", "details": { "total": 512000000, "free": 400000000 } },
+    "ping": { "status": "UP" }
+  }
+}
+
+🔹 If something goes wrong, it will show "DOWN" status:
+
+{
+  "status": "DOWN",
+  "components": {
+    "db": { "status": "DOWN", "details": { "error": "Connection refused" } },
+    "diskSpace": { "status": "UP" }
+  }
+}
+
+✔ Useful for health checks in Kubernetes, Docker, and monitoring tools.
+
+3️ /actuator/loggers (Logger Levels & Configuration)
+🔹 This endpoint shows current logging levels and allows changing them dynamically.
+
+Example Request
+
+GET http://localhost:8080/actuator/loggers
+Example Response
+
+{
+  "levels": ["OFF", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"],
+  "loggers": {
+    "root": { "configuredLevel": "INFO", "effectiveLevel": "INFO" },
+    "org.springframework.web": { "configuredLevel": "DEBUG", "effectiveLevel": "DEBUG" },
+    "com.myapp": { "configuredLevel": null, "effectiveLevel": "INFO" }
+  }
+}
+
+✔ Changing Log Level at Runtime
+
+You can modify logging levels dynamically:
+
+POST http://localhost:8080/actuator/loggers/com.myapp
+
+Content-Type: application/json
+
+{
+  "configuredLevel": "DEBUG"
+}
+✔ Useful for debugging issues in production without restarting the application.
+
+🚀 Summary
+
+Endpoint	        Description
+/actuator/metrics	Shows CPU, memory, DB, and HTTP request stats
+/actuator/health	Shows app health status (UP/DOWN)
+/actuator/loggers	Shows & modifies logging levels dynamically
+
+////////
+
+// Summary: How to Fix Performance Issues
+Issue	                    Solution
+
+High CPU Usage	            Optimize code, reduce loops, use efficient data structures
+Memory Leaks	            Use heap dump analysis, avoid unnecessary object creation
+Slow Database Queries	    Index tables, optimize queries, enable caching
+Slow API Response	        Use compression, async processing, reactive programming
+Scaling Issues	            Use Kubernetes, load balancer, caching
+
+// When NOT to Use Apache Kafka
+
+While Kafka is powerful for event streaming and messaging, it's not always the right choice.
+
+1️ Low Latency Requirements (< 1ms)
+🔹 Kafka has higher latency (few milliseconds) due to its distributed nature.
+✔ Use Instead: RabbitMQ or ZeroMQ for ultra-low latency messaging.
+
+2️ Simple Message Queueing Needs
+🔹 Kafka is overkill for simple pub-sub messaging or request-response models.
+✔ Use Instead: RabbitMQ, ActiveMQ, or SQS for lightweight message brokering.
+
+3️ Transactional Systems Requiring Strong Consistency
+🔹 Kafka does not support ACID transactions across multiple partitions.
+✔ Use Instead: PostgreSQL, MySQL, or Event Store for strong consistency.
+
+4️ Small-Scale Applications
+🔹 Kafka is complex to set up and manage for small projects with low throughput.
+✔ Use Instead: Redis Streams or gRPC for simpler event handling.
+
+5️ Real-Time Processing with Guaranteed Ordering
+🔹 Kafka guarantees ordering only within a single partition, not across partitions.
+✔ Use Instead: Apache Pulsar (supports global ordering).
+
+
+🚀 Summary: When NOT to Use Kafka
+
+Use Case	Better Alternative
+Low latency messaging (< 1ms)	RabbitMQ, ZeroMQ
+Simple message queueing	RabbitMQ, ActiveMQ, SQS
+Strict ACID transactions	PostgreSQL, MySQL
+Small-scale apps	Redis Streams, gRPC
+Global ordering required	Apache Pulsar
+
+
+
+// Spring Boot Session Management with Redis
+Redis is a high-performance, in-memory data store that is widely used for distributed session management in Spring Boot applications.
+
+1️⃣ Why Use Redis for Session Management?
+✅ Scales well in distributed environments (multiple instances of an app).
+✅ Fast session retrieval (in-memory storage).
+✅ Prevents session loss when a server restarts.
+✅ Shared session store across multiple services.
+
+2️⃣ Setting Up Redis for Spring Boot Sessions
+🔹 (A) Install Redis
+Option 1: Using Docker
+
+sh
+Copy
+Edit
+docker run --name redis -d -p 6379:6379 redis
+Option 2: Install Redis Locally
+
+Windows: Use WSL or install from Redis website.
+
+Linux/macOS:
+
+sh
+Copy
+Edit
+sudo apt update && sudo apt install redis -y
+🔹 (B) Add Dependencies to pom.xml
+xml
+Copy
+Edit
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.session</groupId>
+    <artifactId>spring-session-data-redis</artifactId>
+</dependency>
+🔹 (C) Configure Redis in application.yml
+yaml
+Copy
+Edit
+spring:
+  session:
+    store-type: redis  # Enables Redis session storage
+  redis:
+    host: localhost
+    port: 6379
+    password: ""  # Set if Redis requires authentication
+    timeout: 6000  # Timeout in ms
+🔹 (D) Enable Redis Session Management
+Create a configuration class:
+
+java
+Copy
+Edit
+import org.springframework.context.annotation.Configuration;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+
+@Configuration
+@EnableRedisHttpSession
+public class RedisSessionConfig {
+}
+✔ This enables Redis to store sessions automatically.
+✔ No need to handle session persistence manually.
+
+3️⃣ How Redis Handles Sessions Internally
+When a user logs in, their session ID is stored in Redis.
+
+Each request checks Redis for the session data.
+
+Redis acts as a central session store across multiple instances of the app.
+
+Example Redis Key-Value Structure for a Session
+Redis Key	Value (Serialized Session Data)
+spring:session:sessions:<session-id>	{username: "user1", roles: ["ADMIN"]}
+spring:session:expirations:<timestamp>	session-id
+4️⃣ Testing the Redis Session Setup
+🔹 Start Your Spring Boot App
+Run your Spring Boot app and log in to a session-based endpoint.
+
+🔹 Check Active Sessions in Redis
+Run Redis CLI:
+
+sh
+Copy
+Edit
+redis-cli
+Check all stored sessions:
+
+sh
+Copy
+Edit
+KEYS spring:session:sessions:*
+Retrieve session data:
+
+sh
+Copy
+Edit
+GET spring:session:sessions:<session-id>
+🔹 Expire Session Manually
+To simulate session timeout:
+
+sh
+Copy
+Edit
+DEL spring:session:sessions:<session-id>
+5️⃣ Session Expiry & Auto-Logout
+By default, Redis sessions expire after 30 minutes. You can customize this:
+
+🔹 Configure Custom Session Timeout
+yaml
+Copy
+Edit
+server:
+  servlet:
+    session:
+      timeout: 15m  # Session expires in 15 minutes
+OR programmatically:
+
+java
+Copy
+Edit
+@Bean
+public HttpSessionListener httpSessionListener() {
+    return new HttpSessionListener() {
+        @Override
+        public void sessionCreated(HttpSessionEvent se) {
+            se.getSession().setMaxInactiveInterval(900); // 900 sec = 15 min
+        }
+        @Override
+        public void sessionDestroyed(HttpSessionEvent se) {
+            System.out.println("Session destroyed: " + se.getSession().getId());
+        }
+    };
+}
+6️⃣ Session Sharing Across Multiple Instances
+If you run multiple instances of your Spring Boot app, Redis ensures all instances share the same session store.
+
+Example: Load Balanced Session Sharing
+yaml
+Copy
+Edit
+spring:
+  redis:
+    host: redis-cluster  # Redis in a clustered setup
+✔ Users remain logged in across instances
+✔ No need for sticky sessions in load balancers
+
+🚀 Summary
+Feature	Redis Sessions ✅
+Scales in distributed systems	✅
+Fast session retrieval	✅ (In-memory)
+Session persistence	✅ (Even after server restart)
+Supports auto session expiration	✅
+Session sharing across multiple instances	✅
+
+
+
+
+////
+
+@Bean
+    public NewTopic notificationTopic() {
+        return new NewTopic("notifications", 3, (short) 1);
+    }
+	
+	
+// Handling Failures: Kafka Dead Letter Queue (DLQ)
+
+If a message fails repeatedly, Kafka can redirect it to a Dead Letter Queue (DLQ) for later processing.
+
+🔹 (A) Configure DLQ Handling
+java
+Copy
+Edit
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class KafkaDeadLetterConfig {
+
+    @Bean
+    public NewTopic deadLetterTopic() {
+        return new NewTopic("notifications.DLQ", 1, (short) 1);
+    }
+}
+🔹 (B) Handle Failed Messages & Move to DLQ
+java
+Copy
+Edit
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class DeadLetterConsumer {
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public DeadLetterConsumer(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    @KafkaListener(topics = "notifications", groupId = "notification-group")
+    public void consumeNotifications(String message) {
+        try {
+            System.out.println("Processing Notification: " + message);
+            // Simulating failure scenario
+            if (message.contains("fail")) {
+                throw new RuntimeException("Processing failed!");
+            }
+        } catch (Exception e) {
+            System.out.println("Moving failed message to DLQ: " + message);
+            kafkaTemplate.send("notifications.DLQ", message);
+        }
+    }
+
+    @KafkaListener(topics = "notifications.DLQ", groupId = "notification-group")
+    public void handleDeadLetterQueue(String message) {
+        System.out.println("Handling DLQ message: " + message);
+    }
+}
+✔ If processing fails, the message is moved to notifications.DLQ.
+
+
+/////////////////////////////////
+
+//  How to Configure Multiple Database Connections in Spring Boot
+In some applications, you may need to connect to multiple databases. This can be required for:
+
+Microservices architecture (separating read & write databases).
+
+Multi-tenancy (different customers have separate databases).
+
+Legacy system integration (connecting to old & new databases).
+
+Spring Boot supports multiple data sources using @Primary, @ConfigurationProperties, and LocalContainerEntityManagerFactoryBean.
+
+1️⃣ Define Multiple Data Sources in application.yml
+yaml
+Copy
+Edit
+spring:
+  datasource:
+    primary:
+      url: jdbc:mysql://localhost:3306/primary_db
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    secondary:
+      url: jdbc:postgresql://localhost:5432/secondary_db
+      username: postgres
+      password: postgres
+      driver-class-name: org.postgresql.Driver
+✔ Defines two different databases (primary_db for MySQL, secondary_db for PostgreSQL).
+
+2️⃣ Create Configuration for Primary Database
+java
+Copy
+Edit
+import javax.sql.DataSource;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+
+@Configuration
+public class PrimaryDatabaseConfig {
+
+    @Bean(name = "primaryDataSource")
+    @Primary // Marks this as the default data source
+    @ConfigurationProperties(prefix = "spring.datasource.primary")
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "primaryEntityManagerFactory")
+    @Primary
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan("com.example.model.primary"); // Define package for primary DB entities
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        return em;
+    }
+
+    @Bean(name = "primaryTransactionManager")
+    @Primary
+    public JpaTransactionManager transactionManager() {
+        return new JpaTransactionManager(entityManagerFactory().getObject());
+    }
+}
+✔ This configuration connects to the MySQL database (primary_db).
+✔ Marks @Primary so that this is used by default.
+
+3️⃣ Create Configuration for Secondary Database
+java
+Copy
+Edit
+import javax.sql.DataSource;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+
+@Configuration
+public class SecondaryDatabaseConfig {
+
+    @Bean(name = "secondaryDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.secondary")
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "secondaryEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan("com.example.model.secondary"); // Define package for secondary DB entities
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        return em;
+    }
+
+    @Bean(name = "secondaryTransactionManager")
+    public JpaTransactionManager transactionManager() {
+        return new JpaTransactionManager(entityManagerFactory().getObject());
+    }
+}
+✔ This configuration connects to the PostgreSQL database (secondary_db).
+
+4️⃣ Define Entity Classes for Each Database
+Entities must be in different packages to avoid conflicts.
+
+🔹 Primary Database Entity
+java
+Copy
+Edit
+package com.example.model.primary;
+import jakarta.persistence.*;
+
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+}
+🔹 Secondary Database Entity
+java
+Copy
+Edit
+package com.example.model.secondary;
+import jakarta.persistence.*;
+
+@Entity
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String orderDetails;
+}
+5️⃣ Create Repositories for Each Database
+🔹 Primary Database Repository
+java
+Copy
+Edit
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import com.example.model.primary.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+}
+🔹 Secondary Database Repository
+java
+Copy
+Edit
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import com.example.model.secondary.Order;
+
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Long> {
+}
+6️⃣ Using the Repositories in a Service
+java
+Copy
+Edit
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class DatabaseService {
+
+    private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
+
+    public DatabaseService(UserRepository userRepository, OrderRepository orderRepository) {
+        this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+    }
+
+    @Transactional("primaryTransactionManager") // Use the transaction of primary DB
+    public void saveUser(String name) {
+        User user = new User();
+        user.setName(name);
+        userRepository.save(user);
+    }
+
+    @Transactional("secondaryTransactionManager") // Use the transaction of secondary DB
+    public void saveOrder(String details) {
+        Order order = new Order();
+        order.setOrderDetails(details);
+        orderRepository.save(order);
+    }
+}
+✔ Ensures transactions are managed separately for each database.
+
+
+
+//  Implementing Method-Level Security in a Spring Boot Application
+Spring Security provides method-level security to control access to methods based on roles, authentication, or custom conditions.
+This allows for fine-grained access control at the business logic level, ensuring better security and separation of concerns.
+
+1️⃣ Enable Method-Level Security
+First, add @EnableMethodSecurity in a configuration class to enable method security annotations.
+
+java
+Copy
+Edit
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
+@Configuration
+@EnableMethodSecurity // Enables method-level security
+public class SecurityConfig {
+}
+✔ Activates annotations like @PreAuthorize, @PostAuthorize, and @Secured.
+
+2️⃣ Using Method-Level Security Annotations
+🔹 @PreAuthorize - Check Before Method Execution
+Restricts access before a method is executed based on a user's role or permission.
+
+java
+Copy
+Edit
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AccountService {
+
+    @PreAuthorize("hasRole('ADMIN')") 
+    public void deleteAccount(Long accountId) {
+        System.out.println("Account deleted: " + accountId);
+    }
+}
+✔ Only users with the ADMIN role can call deleteAccount().
+
+🔹 @PostAuthorize - Check After Method Execution
+Used to apply security rules after the method executes.
+
+java
+Copy
+Edit
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ReportService {
+
+    @PostAuthorize("returnObject.owner == authentication.name") // Checks if returned object is owned by user
+    public Report getReport(Long reportId) {
+        return new Report(reportId, "user1"); // Simulating report retrieval
+    }
+}
+✔ If the authenticated user is not the report owner, access is denied.
+
+🔹 @Secured - Role-Based Access
+A simpler way to restrict access based on roles.
+
+java
+Copy
+Edit
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Service;
+
+@Service
+public class TransactionService {
+
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"}) 
+    public void processTransaction() {
+        System.out.println("Transaction processed!");
+    }
+}
+✔ Only ADMIN or MANAGER roles can call processTransaction().
+
+🔹 @RolesAllowed (Alternative to @Secured)
+java
+Copy
+Edit
+import jakarta.annotation.security.RolesAllowed;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PaymentService {
+
+    @RolesAllowed("ROLE_USER")
+    public void makePayment() {
+        System.out.println("Payment successful!");
+    }
+}
+✔ Requires ROLE_USER to call makePayment().
+
+
+
+// kafka-topics.sh --create --bootstrap-server server_address --replication-factor 1 --
+// partitions 3 --topic our_topic_name
+
+ChatGPT said:
+The command you provided is used to create a new Kafka topic using the kafka-topics.sh script. Here's a breakdown of each part:
+
+🔹 Explanation of the Kafka Command
+sh
+Copy
+Edit
+kafka-topics.sh --create --bootstrap-server server_address --replication-factor 1 --partitions 3 --topic our_topic_name
+Option	Description
+kafka-topics.sh	Script used to manage Kafka topics.
+--create	Creates a new topic.
+--bootstrap-server server_address	Specifies the Kafka broker (replace server_address with actual broker address, e.g., localhost:9092).
+--replication-factor 1	Sets the replication factor (number of copies of data across brokers). 1 means no redundancy.
+--partitions 3	Sets the number of partitions (3 partitions allow parallelism in message processing).
+--topic our_topic_name	The name of the topic being created (replace our_topic_name with an actual topic name).
+🔹 Example: Creating a Topic
+To create a topic named "orders" with 3 partitions and a replication factor of 2:
+
+sh
+Copy
+Edit
+kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 2 --partitions 3 --topic orders
+🔹 Verifying the Topic Creation
+After creating the topic, check if it exists using:
+
+sh
+Copy
+Edit
+kafka-topics.sh --list --bootstrap-server localhost:9092
+Or describe the topic details:
+
+sh
+Copy
+Edit
+kafka-topics.sh --describe --bootstrap-server localhost:9092 --topic orders
+✔ Shows partition count, replication factor, and broker assignment.
+
+🔹 Important Considerations
+Replication Factor should be ≤ Broker Count
+
+If your Kafka cluster has only 1 broker, setting --replication-factor 2 will fail.
+
+To fix this, either add more brokers or set replication factor = 1.
+
+More Partitions = More Parallelism
+
+3 partitions mean 3 consumers can process messages concurrently.
+
+However, too many partitions increase metadata overhead.
+
+
+
+
+
+// Does Kafka Store Partitions on Different Servers?
+It depends on the number of brokers in the Kafka cluster.
+When you create a topic with multiple partitions, Kafka distributes the partitions across available brokers based on the partitioning strategy and replication factor.
+
+1️⃣ Understanding Kafka Partitioning
+A Kafka topic is split into multiple partitions for parallel processing.
+
+Each partition is assigned to a Kafka broker (server) for storage and retrieval.
+
+Replication Factor determines how many copies of each partition exist on different brokers.
+
+2️⃣ Example: Topic with 3 Partitions and 3 Brokers
+Command to Create the Topic
+sh
+Copy
+Edit
+kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 2 --partitions 3 --topic my_topic
+How Kafka Distributes Partitions
+If you have 3 brokers (Broker-1, Broker-2, Broker-3), Kafka may distribute partitions like this:
+
+Partition	Leader Broker	Replica Brokers
+Partition-0	Broker-1	Broker-2
+Partition-1	Broker-2	Broker-3
+Partition-2	Broker-3	Broker-1
+✔ Each partition is stored on one broker (leader), with replicas on another broker for fault tolerance.
+✔ If a broker fails, another broker takes over as the partition leader.
+
+3️⃣ What Happens if There’s Only 1 Broker?
+If you only have 1 Kafka broker, all partitions will be stored on that single server, and there will be no replication:
+
+Partition	Broker
+Partition-0	Broker-1
+Partition-1	Broker-1
+Partition-2	Broker-1
+❌ No fault tolerance – If the broker crashes, all data is lost.
+✔ Solution: Add more brokers and increase the replication factor.
+
+4️⃣ Key Takeaways
+✅ Partitions are spread across multiple brokers in a cluster.
+✅ Each partition has one leader and optional replicas for fault tolerance.
+✅ More partitions = Better parallelism but more metadata overhead.
+✅ Replication factor ensures high availability (at least 2 for production).
+
+
+//  Multi-ZooKeeper Setup in Kafka
+✅ Yes, you can have multiple ZooKeeper instances.
+✅ Use a ZooKeeper ensemble (3+ nodes) for fault tolerance.
+✅ Kafka can connect to multiple ZooKeeper nodes for high availability.
+✅ Use an odd number of ZooKeeper nodes (3, 5, or 7) to avoid split-brain issues.
+
+
+
+// Is Kafka Listener and Consumer the Same?
+No, a Kafka Listener and a Kafka Consumer are not exactly the same, but they are closely related.
+
+1️⃣ Kafka Consumer
+A Kafka Consumer is a lower-level API used to manually consume messages from a Kafka topic. It provides fine-grained control over message processing, commits, and offsets.
+
+🔹 Example using Kafka Consumer API in Java:
+
+java
+Copy
+Edit
+import org.apache.kafka.clients.consumer.*;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Properties;
+
+public class SimpleKafkaConsumer {
+    public static void main(String[] args) {
+        Properties props = new Properties();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "my-group");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+        consumer.subscribe(Collections.singletonList("my_topic"));
+
+        while (true) {
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+            for (ConsumerRecord<String, String> record : records) {
+                System.out.println("Received message: " + record.value());
+            }
+        }
+    }
+}
+✔ Requires manual polling (consumer.poll()).
+✔ Gives fine control over offset commits, message processing, and error handling.
+
+2️⃣ Kafka Listener (Spring Kafka)
+A Kafka Listener is a higher-level abstraction provided by Spring Kafka, making it easier to consume messages. It automatically handles polling, multithreading, and error handling.
+
+🔹 Example using @KafkaListener in Spring Boot:
+
+java
+Copy
+Edit
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaConsumerService {
+
+    @KafkaListener(topics = "my_topic", groupId = "my-group")
+    public void listen(String message) {
+        System.out.println("Received message: " + message);
+    }
+}
+✔ Automatically polls and processes messages.
+✔ Spring manages consumer lifecycle and multithreading.
+✔ Simpler than using the Kafka Consumer API directly.
+
+3️⃣ Key Differences Between Kafka Listener and Consumer
+Feature	Kafka Consumer (Low-level API)	Kafka Listener (Spring Kafka)
+Manual Polling	✅ Required (consumer.poll()).	❌ Not required (handled by Spring).
+Offset Management	✅ Manually controlled.	✅ Automatically managed by Spring.
+Multithreading	❌ Requires manual implementation.	✅ Handled by Spring.
+Error Handling	✅ Custom error handling needed.	✅ Spring provides built-in error handling.
+Ease of Use	❌ More complex (fine-grained control).	✅ Simpler and declarative.
+🚀 Conclusion
+✔ A Kafka Listener is a wrapper around the Kafka Consumer API, simplifying message consumption.
+✔ If you need fine control (offsets, retries, error handling) → Use Kafka Consumer API.
+✔ If you want a simpler, Spring-managed approach → Use @KafkaListener.
+
+
+
+
+////////////////////////////////////////////////////////////////
+
+do bean created by prototype get stored in IOC container
+
+
+ChatGPT said:
+No, prototype-scoped beans are not stored in the Spring IoC container after creation.
+
+How Prototype Beans Work in IoC Container:
+When you request a prototype bean using context.getBean(), Spring creates a new instance and returns it.
+
+Unlike singleton beans, which remain in the IoC container for the entire application lifecycle, prototype beans are not managed after creation.
+
+Spring does not track prototype beans, meaning:
+
+It does not call destroy() on them automatically.
+
+It does not reuse them for future requests.
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+

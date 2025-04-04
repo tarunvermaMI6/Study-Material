@@ -4,6 +4,7 @@
   
 * Servlet Container : A Servlet Container (also known as a Web Container) is a part of an application server that manages servlets by handling HTTP requests 
   and responses,managing the servlet lifecycle, and providing built-in services like security, session management, and concurrency handling.  
+
 * Is a Servlet Container Inside an Application Server?
   Yes, an Application Server includes a Servlet Container as part of its functionality.
   A Servlet Container is responsible for handling servlets, JSPs, and managing HTTP requests, whereas an Application Server provides additional features like EJB 
@@ -42,6 +43,8 @@
   they want to test your understanding of its core architecture, auto-configuration, and dependency management.
    check chat gpt 
 
+ * Dependency Management in Spring Boot Spring Boot simplifies dependency management using the Spring Boot Starter Parent
+
 * why we use bean ? Objects that is created or handle by spring IOC is called bean and it is done to achieve loose coupling and DI.
 * @Bean - to explicitly define a method that creates and configures a bean, allowing you to control how an object is instantiated and managed by the Spring IoC 
   container,   
@@ -49,7 +52,8 @@
   If t is a Thread object whose thread is currently executing, then t.join() will make sure that t is terminated before the next instruction is executed by 
   the program.
 
-* The @Bean annotation in Spring is used to define and manage beans explicitly in a Spring application. It is typically used inside a @Configuration class to create Spring-managed beans programmatically.
+* The @Bean annotation in Spring is used to define and manage beans explicitly in a Spring application. It is typically used inside a @Configuration class to 
+  create Spring-managed beans programmatically.
 
 * Explicit Bean Creation → Used when you cannot use @Component, @Service, or @Repository annotations (e.g., for third-party classes).
 ✅ Customization → Allows custom initialization and configuration of beans.

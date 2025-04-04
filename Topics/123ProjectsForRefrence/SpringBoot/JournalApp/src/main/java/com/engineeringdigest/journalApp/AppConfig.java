@@ -12,9 +12,10 @@ public class AppConfig {
 		return new RestTemplate();
 	}
 
+	/*
 	@Bean
 	AppCache appCache() {
 
 		return new AppCache();
-	}
+	} */
 }

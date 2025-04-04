@@ -1,0 +1,307 @@
+
+// let's start
+
+ Tutorial Link : https://www.youtube.com/watch?v=17Bl31rlnRM&list=PL9gnSGHSqcnoqBXdMwUTRod4Gi3eac2Ak&index=6
+ Blog: https://www.techwithkunal.com/blog/getting-started-with-docker
+ 
+* bohot saal pahle hum ek server par ek he application deploy kar sakte then
+* fir aaya VM ware uspe hum muliple application deploy kar sakte the but usme kya hota hai uksa ek main host OS hota hai and usme hum muliple VM create kar sakte and har ek VM ka apna
+  OS hoga agar OS hai to uska license bhi lena padega
+
+ // Virtual Machine (VM) Overview
+ A Virtual Machine (VM) is a software-based simulation of a physical computer. It allows you to run an operating system (OS) inside another OS, providing isolation, portability, and 
+ scalability.
+
+// Why Use a Virtual Machine?
+
+✅ Isolation – VMs run independently, preventing system crashes or conflicts.
+✅ Portability – A VM can be moved across different physical machines.
+✅ Multi-OS Support – Run Windows on Linux, or multiple OS versions on the same system.
+✅ Scalability – Cloud platforms like AWS, Azure, and GCP use VMs for flexible computing.
+✅ Safe Testing – Developers use VMs to test software without affecting the host system.
+
+// Disadvantages of Using Virtual Machines (VMs) 🚫
+While Virtual Machines (VMs) offer great flexibility, they also come with some drawbacks:
+
+//1. Performance Overhead 🚀📉
+VMs share CPU, memory, and storage with other VMs, leading to slower performance compared to physical machines.
+
+Virtualization overhead occurs because the hypervisor consumes system resources.
+
+💡 Solution: Use a Type-1 hypervisor (bare-metal) like VMware ESXi or KVM for better performance.
+
+//2. High Resource Consumption 🔋💾
+Each VM requires its own OS, consuming extra RAM, disk space, and CPU cycles.
+
+Running multiple VMs can slow down the host system.
+
+💡 Solution: Allocate resources efficiently and use containers (Docker, Kubernetes) when possible.
+
+//3. Slower Boot Time ⏳
+Since each VM runs a full OS, startup time is longer compared to containers.
+
+VMs may take minutes to boot, while containers start in seconds.
+
+💡 Solution: Use pre-configured VM snapshots to reduce boot time.
+
+//4. Complex Management & Maintenance 🛠️
+Managing multiple VMs requires hypervisor administration skills.
+
+Software updates and security patches must be applied to each VM separately.
+
+Backup and recovery processes can be complex and time-consuming.
+
+💡 Solution: Use orchestration tools (VMware vSphere, OpenStack) for automation.
+
+//5. Security Risks 🔓🚨
+If a host machine is compromised, all VMs running on it may be at risk.
+
+VM escape attacks allow malicious programs to break out of a VM and access the host system.
+
+💡 Solution: Regularly update hypervisors and use security patches.
+
+//6. Licensing Costs 💰
+Running Windows VMs requires a Windows license.
+
+Proprietary hypervisors like VMware ESXi have paid versions with advanced features.
+
+💡 Solution: Use open-source alternatives like KVM or VirtualBox.
+
+//7. Less Efficient than Containers 🐳 vs 🖥️
+Containers (Docker) share the host OS, making them lighter and faster than VMs.
+
+VMs are better for running multiple OS environments, but containers are ideal for microservices.
+
+💡 Solution: If OS isolation is not needed, use Docker or Kubernetes instead of VMs.
+
+///////////////////////////////////////////
+
+* ab dikkar ye VM me ki sabka OS alag hai license lena hai sabka , CPU and harware disk shared hai to performance overhead ho jata hai usse and manlo ek project ek VM par chal raha 
+  hai dusre pe nahi could be dependecny issue
+* uska sokution hai containers
+* Docker ek tool as well as ek Company hai
+* Docker Desktop for windows and mac , it comes with CLI and UI.
+* docker file --> docker image --> container
+
+// What is a Dockerfile?
+A Dockerfile is a script that defines how to build a Docker image. It contains a set of instructions that specify:
+✔️ The base image to use
+✔️ What dependencies to install
+✔️ How to copy files into the image
+✔️ What commands to run when the container starts
+
+//1) Docker File:
+
+# 1 Use a base image with Java installed
+FROM openjdk:17-jdk-slim
+
+# 2 Set the working directory inside the container
+WORKDIR /app
+
+# 3 Copy the JAR file from your local machine into the container
+COPY target/app.jar app.jar
+
+# 4️ Expose the port the app runs on
+EXPOSE 8080
+
+# 5️ Define the command to run the application
+CMD ["java", "-jar", "app.jar"]
+
+
+// 2) Docker Image 
+
+docker build -t my-spring-boot-app  // this command will create a docker image
+
+// 3) run the docker image as a container
+
+docker run -p 8080:8080 my-spring-boot-app
+
+// Docker Image vs. Docker Container 🐳
+
+// Feature	              Docker Image                     	                       Docker Container 
+
+Definition	          A blueprint or template for creating containers	       A running instance of a Docker image
+State	              Static (Read-Only)	                                   Dynamic (Running & Read-Write)
+Usage	              Used to create multiple containers	                   Runs the application inside an isolated environment
+Storage	              Stored in a registry (e.g., Docker Hub, AWS ECR)	       Exists in memory while running, but can persist if needed
+Example	              openjdk:17, nginx:latest	                               my-java-app-container
+
+// What is a Docker Image? 
+
+A Docker image is a pre-built package that contains everything needed to run an application:
+
+OS libraries
+
+Code
+
+Dependencies
+
+Configuration
+
+It is read-only and acts as a blueprint for creating containers.
+
+Example Images:
+
+openjdk:17 → Java 17 environment
+
+mysql:8 → MySQL database
+
+// What is a Docker Container?
+
+A container is a running instance of a Docker image.
+
+Containers are lightweight, isolated, and portable.
+
+You can run multiple containers from the same image.
+
+Example: Run a Container from an Image
+
+Think of Docker images as class blueprints in Java, and containers as the objects (instances) created from those classes.
+
+* container does not communicate with the outside world
+
+* Docker registry is where all the image are present like dockerhub.com
+
+* Yes! You can run multiple containers from the same Docker image. Each container will be an independent instance but will use the same image as the base.
+
+* agar muje apne kuch chnages karne hai and share karna hai container with chnages mai direct image me to kar nahi sakta like ig i image of mysql , so mai commit ka use karuunga
+  and apne chnages like added a new file in container using commit than it will generate a new image with new changes
+* docker inspect
+* docker stop
+* docker rmi $(image_name) 
+* docker build -t app.jar 
+
+
+ // Can we create docker image without docker file ?
+
+Yes, you can create a Docker image without a Dockerfile, but it's not the recommended approach. Here are two ways to do it:
+
+1 Using docker commit (Manual Image Creation)
+
+  Instead of using a Dockerfile, you can:
+1️ Start a container from a base image.
+2️ Make changes inside the running container.
+3️ Commit the container to create a new image.
+
+📌 Example Steps:
+
+Run a base container (e.g., Ubuntu):
+
+//docker run -it ubuntu bash
+
+This opens an interactive shell inside the container.
+
+Install dependencies inside the container (e.g., install Java):
+
+//apt update && apt install -y openjdk-17-jdk
+
+Exit the container:
+
+exit
+
+Find the container ID:
+
+//docker ps -a
+
+Commit the container as a new image:
+
+//docker commit <container_id> my-custom-image
+
+Run a container from the new image:
+
+//docker run -it my-custom-image bash
+
+✅ Pros:
+✔️ Quick way to create an image without writing a Dockerfile.
+✔️ Useful for creating temporary images from live containers.
+
+❌ Cons:
+🚫 Not reproducible – You have to manually redo steps every time.
+🚫 Hard to version and track changes.
+
+
+
+
+
+// steps to create docker container of spring boot app 
+
+1) requirements
+
+Java 8+ installed
+✔️ Maven installed (mvn -v to check)
+✔️ Docker installed and running (docker --version to check)
+✔️ Spring Boot Application (a simple app.jar file)
+
+2) Create Spring Boot App
+
+3) Inside your Spring Boot project, create a Dockerfile in the root directory.
+
+# Use an official Java runtime as the base image
+FROM openjdk:17-jdk-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the JAR file from the target directory into the container
+COPY target/*.jar app.jar                                                            */ remove this
+
+# Expose the port the application will run on
+EXPOSE 8080
+
+# Run the application
+CMD ["java", "-jar", "app.jar"]
+
+4) Build the Spring Boot Application JAR
+
+mvn clean package -DskipTests
+
+5) Build the Docker Image
+
+docker build -t my-spring-boot-app .
+
+6 ) Run the Docker Container
+
+docker run -p 8080:8080 my-spring-boot-app
+
+Note: both ports are 8080, but they refer to different environments:
+
+The first 8080 → Host machine port (your laptop).
+
+The second 8080 → Container's internal port (inside Docker).
+
+// some common commands
+
+mvn clean package -DskipTests       # Build JAR file
+docker build -t my-spring-boot-app . # Build Docker image
+docker run -p 8080:8080 my-spring-boot-app  # Run container
+docker ps                            # Check running containers
+docker images                         # List images
+docker login                          # Login to Docker Hub
+docker tag my-spring-boot-app mydockerhubuser/my-app:latest  # Tag image
+docker push mydockerhubuser/my-app:latest  # Push to Docker Hub
+docker stop <container_id>            # Stop container
+docker rm <container_id>               # Remove container
+docker rmi my-spring-boot-app          # Remove image
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,105 @@
+/******************************************************************************
+
+                            Online Java Compiler.
+                Code, Compile, Run and Debug java program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
+
+public class Main
+{
+	public static void main(String[] args) {
+	
+//	List<Integer> listOne = Arrays.asList(10,20, 30 ,40);
+  //      List<Integer> listTwo = Arrays.asList(90,80,10,20);	
+    //    gettingCommonElements(listOne,listTwo);
+	
+	sortTheEmployee();
+	
+	}
+	
+	public static List<Integer> gettingCommonElements(List<Integer> listOne,List<Integer> listTwo){
+	    
+	    	//l1 = 10,20, 30 ,40
+        //l2= 90,80,10,20
+        
+        List<Integer> outputList = new ArrayList<>();
+        
+        List<Integer> megeList = Stream.concat(listOne.stream(),listTwo.stream()).collect(Collectors.toList());
+        
+        Map<Integer,Long> countMap  =  megeList.stream().collect(Collectors.groupingBy(x->x,Collectors.counting()));
+		
+		for(Map.Entry<Integer,Long> value: countMap.entrySet()){
+		    
+		    if(value.getValue()>1){
+		        outputList.add(value.getValue());
+		    }
+		}
+		
+		return outputList;
+	}
+	
+	
+	public static void characterCount(){
+	    
+	    //list l= a,a,a,b,b,b,c,c,c,f,g,b,r
+	    
+	    List<String> inputList = Arrays.asList("a","a","a","f","g","b","r");
+	    
+	    Map<String,Long> outputList = inputList.stream().collect(Collectors.groupingBy(x->x,Collectors.counting()));
+	}
+	
+	
+	
+	public static void sortTheEmployee(){
+	    
+	    List<Employee> employeeList = Arrays.asList(new Employee("tarun" 12000),new Employee("Aeun",1300));
+	    
+	    employeeList = employeeList.stream().sorted((x,y)-> x.getSalary()-y.getSalary()).collect(Collectors.toList());
+	    System.out.println(employeeList);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
+
+class Employee{
+    
+    private String name;
+    private int salary;
+    
+    
+    // getter and setter
+    
+    public int getSalary(){
+        
+        this.salary = salary;
+    }
+    
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

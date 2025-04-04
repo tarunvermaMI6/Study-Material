@@ -1,0 +1,84 @@
+
+Tutorial Link: https//www.youtube.comwatchv=yn_stY3HCr8
+
+Checkout : github copilot
+
+* docker create an seperate VM if you install it on windows
+* If you install Docker on Linux, it does not create a separate virtual machine like it does on Windows. Instead, Docker runs natively on the Linux kernel.
+
+* A /* docker-compose.yml */ file is used to define and run multi-container Docker applications using Docker Compose. Instead of manually running multiple docker run commands, 
+  you can define all services, networks, and volumes in a single YAML file and start everything with a single command.
+
+// What docker-compose.yml Does
+
+Defines Multiple Containers (Services)
+
+You specify multiple services (e.g., database, backend, frontend) in one file.
+
+Configures Container Properties
+
+Set environment variables, ports, volumes, networks, dependencies, etc.
+
+Automates Startup with a Single Command
+
+Run docker-compose up -d to start all services at once.  
+
+Example: 
+
+version: "3.8"  # Docker Compose file format version
+
+services:
+  app:
+    image: my-java-app:latest  # Docker image for the Java app
+    container_name: java-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mydatabase
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+
+  db:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:  # Persistent storage for MySQL
+
+* // Test Containers : Testcontainers in Java
+
+ Testcontainers is a Java library that provides lightweight, throwaway containers for integration testing. It allows you to spin up real database instances, message brokers, 
+ or other dependencies inside Docker containers during tests.
+
+Why Use Testcontainers?
+✅ Real Dependencies – Runs actual database instances (e.g., PostgreSQL, MySQL) instead of in-memory databases.
+✅ Isolated Environment – Ensures tests are independent of the local machine setup.
+✅ Auto Cleanup – Containers are automatically destroyed after tests, preventing pollution.
+✅ Works with JUnit & Spring Boot – Seamlessly integrates with JUnit 5, Spring Boot, and Hibernate.
+
+// Approach	                             Use Case
+MockMvc	                                 Unit testing of controllers (without running full app)
+TestRestTemplate	                     Full integration testing with Spring Boot server
+RestAssured	                             More powerful API testing with fluent assertions
+Testcontainers	                         Real database testing inside Docker
+
+	
+
+
+
+
+
+
+
+
+
