@@ -1,0 +1,10 @@
+ 
+ 
+ * So  my last project  was rpv4,  it was  proctoring as a service where a candidate can registered themselves for the exams like TOEFEL and GRE and then they will get the exam link in their email and by going through that exam link they can check in themselves in a system 
+   and after going through the approval process they can publish their livestream and screen feed which is monitored by the online proctors which are just online invigilators , based on the monitoring proctors can perform some actions like they can pause the test, terminate the test 
+   and can also chat with the candidate , so basically we can say that it is an online proctoring tool to monitor the candidate throughout the exam.
+   
+   
+ 
+ 
+ 
